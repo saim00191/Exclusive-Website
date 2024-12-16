@@ -176,7 +176,7 @@ const SingleProducts = () => {
                     className="bg-carminePink px-[48px] py-[10px] rounded-[4px] w-[165px] h-[44px]"
                   >
                     <h2
-                      className={`${poppins.className} font-medium text-[12px] xsm:text-[16px] leading-[24px] text-primary`}
+                      className={`${poppins.className} font-medium text-[12px] sm:text-[16px] leading-[24px] text-primary`}
                     >
                       Buy Now
                     </h2>
