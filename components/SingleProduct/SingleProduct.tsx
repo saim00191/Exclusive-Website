@@ -28,7 +28,7 @@ const SingleProducts = () => {
     (state: RootState) => state.singleProducts.Product
   );
   const products = useSelector((state: RootState) => state.products.products);
-  const getProductQuantityInCart = (productId) => {
+  const getProductQuantityInCart = (productId : string) => {
     const cartProduct = products.find((item) => item.id === productId);
     return cartProduct ? cartProduct.quantity : 1;
   };
@@ -57,7 +57,7 @@ const SingleProducts = () => {
                 {item.title}
               </h2>
               <div className="w-[320px] h-[21px] gap-x-3 mt-3 lg:mt-0 flex items-center">
-                {Array.from({ length: item.star }).map((_, index) => (
+                {Array.from({ length: item.star || 0 }).map((_, index) => (
                   <svg
                     key={index}
                     width="16"
