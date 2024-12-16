@@ -1,18 +1,36 @@
 import type { Config } from "tailwindcss";
 
-export default {
+const config: Config = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./shared/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        primary: '#FAFAFA',
+        secondary: '#F5F5F5',
+        carminePink: '#Db4444',
+        greenColor:'#00ff66'
+      },
+      screens: {
+        xs: "360px",
+        xsm: "420px",
+        smx:'550px',
+        sm: "640px",
+        sml: "680px",
+        md: "800px",
+        mdl: "890px",
+        lg: "1024px",
+        lgl: "1100px",
+        lgll:'1190px',
+        xl: "1250px",
+        "2xl": "1536px",
       },
     },
   },
   plugins: [],
-} satisfies Config;
+};
+export default config;
