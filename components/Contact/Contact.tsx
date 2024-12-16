@@ -5,7 +5,7 @@ const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 const Contact = () => {
   return (
     <div className="flex flex-col lg:flex-row container gap-5 py-14">
-      <div className="flex justify-center h-auto lg:h-[457px]  w-full lg:w-[340px] items-center shadow-xl">
+      <div className="flex justify-center h-auto lg:h-[457px]  w-full lg:w-[340px] items-center">
         <div className="w-full lg:w-[270px] h-auto lg:h-[366px] flex flex-col gap-[32px]">
           <div className="flex flex-col gap-[24px]">
             <div className="flex gap-[16px] items-center">
@@ -63,7 +63,7 @@ const Contact = () => {
           </div>
         </div>
       </div>
-      <div className="w-full  mt-12 lg:mt-0 lgl:w-[800px] h-auto lg:h-[457px] flex items-center  justify-center shadow-xl">
+      <div className="w-full  mt-12 lg:mt-0 lgl:w-[800px] h-auto lg:h-[457px] flex items-center  justify-center ">
         <div className="w-full lgl:w-[737px] sml:px-8 lg:px-0 h-auto lg:h-[377px] flex flex-col gap-[32px]">
           <div className="flex flex-col lg:flex-row justify-between gap-4 lg:gap-0">
             <div className="bg-[#F5F5F5] opacity-50 w-full lg:w-[235px]">
