@@ -4,8 +4,13 @@ import { Inter, Poppins } from "next/font/google";
 const inter = Inter({ subsets: ["latin"], weight: ["400", "700"] });
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 
+interface TimerItemProps {
+  label: string;
+  value: string;
+}
+
 const Sale = () => {
-  const TimerItem = ({ label, value }: any) => (
+  const TimerItem = ({ label, value }: TimerItemProps) => (
     <div className="flex flex-col h-[50px] w-[46px] gap-1">
       <p
         className={`${poppins.className} font-medium leading-[18px] text-[12px]`}
@@ -29,7 +34,7 @@ const Sale = () => {
             <h2
               className={`${poppins.className} font-semibold text-[16px] leading-[20px] text-carminePink`}
             >
-              Today’s
+              Todays
             </h2>
           </div>
           <div className="flex flex-col lgll:flex-row justify-between items-center h-auto lgll:h-[63px] px-4 lg:px-0">

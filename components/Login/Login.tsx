@@ -46,7 +46,7 @@ const LogIn = () => {
   };
 
   const dispatch = useDispatch();
-  const signInUser = (event: any) => {
+  const signInUser = (event:React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     setErrEmail("");
@@ -54,7 +54,7 @@ const LogIn = () => {
     setErrMessage("");
     setSuccessMsg("");
 
-    // Validate email
+
     if (!email) {
       setErrEmail("Enter your email");
       return;
@@ -64,7 +64,7 @@ const LogIn = () => {
       return;
     }
 
-    // Validate password
+
     if (!password) {
       setErrPassword("Enter your password");
       return;

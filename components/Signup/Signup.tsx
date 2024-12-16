@@ -7,7 +7,7 @@ import {
 import { app } from "@/firebase/firebase";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import image from "@/images/Login.png";
 import { Inter } from 'next/font/google';
 import { Poppins } from 'next/font/google';
