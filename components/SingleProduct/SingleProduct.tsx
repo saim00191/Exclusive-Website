@@ -30,7 +30,7 @@ const SingleProducts = () => {
   const products = useSelector((state: RootState) => state.products.products);
   const getProductQuantityInCart = (productId : string) => {
     const cartProduct = products.find((item) => item.id === productId);
-    return cartProduct ? cartProduct.quantity : 1;
+    return cartProduct ? cartProduct.quantity : 0;
   };
 
   return (

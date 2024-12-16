@@ -40,13 +40,9 @@ export const ProductsSlice = createSlice({
       }
     },
     deleteItem: (state, action: PayloadAction<string>) => {
-      const item = state.products.find((p) => p.id === action.payload);
-      if (item && item.quantity > 1) {
-        item.quantity--;
-      } else if (item && item.quantity === 1) {
-        state.products = state.products.filter((p) => p.id !== action.payload);
-      }
-    },
+      state.products = state.products.filter((p) => p.id !== action.payload);
+    }
+    ,
     increaseQuantity: (state, action: PayloadAction<string>) => {
       const item = state.products.find((p) => p.id === action.payload);
       if (item) {

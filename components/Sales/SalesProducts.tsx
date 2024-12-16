@@ -18,9 +18,9 @@ const SalesProducts = () => {
 
   return (
     <>
-      <div className="h-auto lgll:h-[350px] justify-end flex my-8 w-full">
-        <div className="w-full flex items-center justify-center">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lgll:grid-cols-4 gap-[30px] mt-8 lgll:mt-0">
+      <div className="h-auto lgll:h-[350px] justify-end flex my-8 w-full ">
+        <div className="w-full flex items-center justify-center ">
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lgll:grid-cols-4 gap-[30px]  lgll:mt-0">
             {SalesItemsList.map((item, index) => (
               <div
                 onClick={() => {
@@ -39,7 +39,7 @@ const SalesProducts = () => {
                   );
                 }}
                 key={index}
-                className="h-[350px] w-[270px] group relative"
+                className="h-[350px] w-[270px] group relative mt-8"
               >
                 <div className="w-full h-[250px] bg-secondary rounded-[4px] flex items-center justify-center">
                   {" "}
