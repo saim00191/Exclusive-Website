@@ -126,7 +126,7 @@ const Cart = () => {
                   <p
                     className={`${poppins.className} flex justify-end text-[16px] leading-[24px] text-black font-normal`}
                   >
-                    ${item.price * item.quantity}
+                   ${item.price ? item.price * item.quantity : 0}
                   </p>
                 </div>
               </div>
