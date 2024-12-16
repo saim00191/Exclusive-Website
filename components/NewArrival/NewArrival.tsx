@@ -63,7 +63,7 @@ const NewArrival = () => {
               <h2
                 className={`${inter.className} font-semibold text-xl md:text-2xl tracking-wider text-white`}
               >
-                Women's Collections
+                Womens Collections
               </h2>
               <p
                 className={`${poppins.className} text-sm text-primary leading-snug`}

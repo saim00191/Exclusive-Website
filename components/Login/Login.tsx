@@ -21,7 +21,6 @@ const LogIn = () => {
   const [userErrEmail, setUserErrEmail] = useState<string>("");
   const [errPassword, setErrPassword] = useState<string>("");
   const [userErrPassword, setUserErrPassword] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
   const [successMsg, setSuccessMsg] = useState<string>("");
   const [errMessage, setErrMessage] = useState<string>("");
 
@@ -88,7 +87,7 @@ const LogIn = () => {
             photoURL: user?.photoURL,
           })
         );
-        setLoading(false);
+
         setSuccessMsg("Logged In Successfully!");
         setTimeout(() => {
           router.push("/");
@@ -96,7 +95,6 @@ const LogIn = () => {
       })
 
       .catch((error) => {
-        setLoading(false);
         const errorCode = error.code;
         console.error("Error signing in with email and password:", error);
 

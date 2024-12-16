@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { Poppins } from "next/font/google";
 import { FaRegHeart } from "react-icons/fa";

@@ -20,7 +20,6 @@ const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState<boolean>(false);
   const [successMsg, setSuccessMsg] = useState<string>("");
 
   const [errUsername, setErrUserName] = useState<string>("");
@@ -28,11 +27,7 @@ const SignUp = () => {
   const [errPassword, setErrPassword] = useState<string>("");
   const [errFirebase, setErrFirebase] = useState<string>("");
 
-  useEffect(() => {
-    if (successMsg) {
-      setLoading(false);
-    }
-  }, [successMsg]);
+ 
 
   const handleUserName = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -102,7 +97,6 @@ const SignUp = () => {
     }
 
     if (!hasError) {
-      setLoading(true);
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           const user = userCredential.user;
@@ -116,7 +110,6 @@ const SignUp = () => {
               })
               .catch((error) => {
                 console.error("Error updating profile: ", error);
-                setLoading(false); 
               });
           }
 
@@ -132,7 +125,6 @@ const SignUp = () => {
         })
         .catch((error) => {
           const errorCode = error.code;
-          setLoading(false); 
           if (errorCode.includes("auth/email-already-in-use")) {
             setErrFirebase("Email already in use. Try another one");
           }

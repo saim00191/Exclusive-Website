@@ -37,7 +37,7 @@ const SingleProducts = () => {
     <div>
       <Wrapper className="py-14 relative">
         {singleProduct.map((item) => (
-          <div className="h-auto lg:h-[550px] gap-4 flex flex-col lg:flex-row items-center  justify-between">
+          <div key={item.id} className="h-auto lg:h-[550px] gap-4 flex flex-col lg:flex-row items-center  justify-between">
             <div className="lg:h-[550px]  w-full lg:w-[600px]   ">
               <Image
                 src={item.image}
