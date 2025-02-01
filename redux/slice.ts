@@ -15,6 +15,7 @@ interface UserInfo {
   email: string | null;
   displayName: string | null;
   photoURL: string | null;
+  password: string | number | boolean;
 }
 
 interface InitialState {
@@ -41,8 +42,7 @@ export const ProductsSlice = createSlice({
     },
     deleteItem: (state, action: PayloadAction<string>) => {
       state.products = state.products.filter((p) => p.id !== action.payload);
-    }
-    ,
+    },
     increaseQuantity: (state, action: PayloadAction<string>) => {
       const item = state.products.find((p) => p.id === action.payload);
       if (item) {
@@ -63,6 +63,10 @@ export const ProductsSlice = createSlice({
     setUserInfo: (state, action: PayloadAction<UserInfo>) => {
       state.userInfo = action.payload;
     },
+    signOut: (state) => {
+      state.userInfo = null;
+      state.products = [];
+    },
   },
 });
 
@@ -72,5 +76,6 @@ export const {
   increaseQuantity,
   decreaseQuantity,
   setUserInfo,
+  signOut,
 } = ProductsSlice.actions;
 export default ProductsSlice.reducer;

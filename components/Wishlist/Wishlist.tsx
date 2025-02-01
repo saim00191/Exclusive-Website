@@ -214,7 +214,7 @@ const Wishlist = () => {
                     </span>
                   </div>
                 </div>
-                <div className="w-[270px] h-[41px] bg-black rounded-br-[4px] absolute top-[209px] cursor-pointer group-hover:flex hidden items-center justify-center rounded-bl-[4px]">
+                <div className="w-[270px] h-[41px] bg-black rounded-br-[4px] absolute top-[225px] cursor-pointer group-hover:flex hidden items-center justify-center rounded-bl-[4px]">
                   <div className="flex gap-2 items-center h-[24px] w-[120px]">
                     <span>
                       <svg

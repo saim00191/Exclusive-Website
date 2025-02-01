@@ -24,7 +24,6 @@ const Categories = () => {
             Browse By Category
           </h2>
           <div className="h-[46px] flex gap-8 lg:pr-12">
-            {/* Down is button  first is left button second is right button */}
             {[
               {
                 width: 24,
@@ -68,11 +67,13 @@ const Categories = () => {
           {CategoriesItem.map((item, index) => (
             <div
               key={index}
-              className="flex flex-col justify-center items-center gap-2 h-[145px] border-[#000000]/30 w-[170px] hover:bg-carminePink  border rounded-[4px] cursor-pointer"
+              className="group flex flex-col justify-center items-center gap-2 h-[145px] border-[#000000]/30 w-[170px] hover:bg-carminePink border rounded-[4px] cursor-pointer"
             >
-              <span>{item.icon}</span>
+              <span className="text-[45px] group-hover:text-white">
+                {item.icon}
+              </span>
               <p
-                className={`${poppins.className} font-normal text-[16px] leading-[24px] text-black`}
+                className={`${poppins.className} font-normal text-[16px] leading-[24px] text-black group-hover:text-white`}
               >
                 {item.title}
               </p>

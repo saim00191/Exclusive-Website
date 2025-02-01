@@ -85,6 +85,7 @@ const LogIn = () => {
             email: user?.email,
             displayName: user?.displayName,
             photoURL: user?.photoURL,
+            password : password
           })
         );
 

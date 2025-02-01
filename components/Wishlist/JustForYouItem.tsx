@@ -1,7 +1,7 @@
-import Image1 from "@/images/ExploreProductsImg5.png";
-import Image2 from "@/images/ExploreProductsImg3.png";
-import Image3 from "@/images/BestSellingImg2.png";
-import Image4 from "@/images/ExploreProductsImg8.png";
+import Image1 from "@/images/NewArrival1.png";
+import Image2 from "@/images/ExploreProductsImg8.png";
+import Image3 from "@/images/ExploreProductsImg5.png";
+import Image4 from "@/images/ExploreProductsImg2.png";
 
 const JustForYouItems = [
   {

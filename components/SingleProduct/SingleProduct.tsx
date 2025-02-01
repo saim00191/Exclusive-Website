@@ -75,7 +75,7 @@ const SingleProducts = () => {
                 <span
                   className={`${poppins.className} text-[14px] leading-[21px] font-normal text-black opacity-50`}
                 >
-                  ({item.rated} Reviews)
+                  ({item.reviews} Reviews)
                 </span>
                 <p className="text-black opacity-40">|</p>
                 <span

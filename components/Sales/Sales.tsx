@@ -64,7 +64,7 @@ const Sale = () => {
               </div>
             </div>
             <div className="h-[46px] mb-12 mt-4 lgll:mt-0 lgll:mb-0 flex gap-8 lg:pr-12 ">
-              {/* Down is button  first is left button second is right button */}
+             
               {[
                 {
                   width: 24,

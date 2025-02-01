@@ -14,7 +14,7 @@ const Cart = () => {
   const dispatch = useDispatch();
   const [total, setTotal] = useState(0);
   const products = useSelector((state: RootState) => state.products.products);
-
+  const userInfo = useSelector((state: RootState) => state.products.userInfo);
   useEffect(() => {
     const totalAmount = products.reduce((acc, item) => {
       const price = (item.price as number) || 0;
@@ -67,7 +67,7 @@ const Cart = () => {
                       <RxCross2 />
                     </span>
                     <h2
-                      className={`${poppins.className} text-[16px] leading-[24px] text-black font-normal`}
+                      className={`${poppins.className} text-[16px] leading-[24px] text-black font-normal `}
                     >
                       {item.title}
                     </h2>
@@ -126,7 +126,7 @@ const Cart = () => {
                   <p
                     className={`${poppins.className} flex justify-end text-[16px] leading-[24px] text-black font-normal`}
                   >
-                   ${item.price ? item.price * item.quantity : 0 }
+                    ${item.price ? item.price * item.quantity : 0}
                   </p>
                 </div>
               </div>
@@ -208,13 +208,22 @@ const Cart = () => {
                     </p>
                   </div>
                   <div className="flex items-center justify-center">
-                    <Link href="/cart/checkout">
+                    {userInfo !== null ? (
+                      <Link href="/cart/checkout">
+                        <button
+                          className={`${poppins.className} w-full sm:w-[265px] h-[56px] rounded-[4px] py-4 px-12 bg-carminePink text-[16px] leading-[24px] font-medium cursor-pointer text-primary`}
+                        >
+                          Proceed to Checkout
+                        </button>
+                      </Link>
+                    ) : (
                       <button
-                        className={`${poppins.className} w-full sm:w-[265px] h-[56px] rounded-[4px] py-4 px-12 bg-carminePink text-[16px] leading-[24px] font-medium cursor-pointer text-primary`}
+                        className={`${poppins.className} w-full sm:w-[265px] h-[56px] rounded-[4px] py-4 px-12 bg-gray-300 text-[16px] leading-[24px] font-medium text-primary cursor-not-allowed`}
+                        disabled
                       >
-                        Proceed to Checkout
+                        Login to Checkout
                       </button>
-                    </Link>
+                    )}
                   </div>
                 </div>
               </div>

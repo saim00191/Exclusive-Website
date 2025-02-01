@@ -9,7 +9,8 @@ interface ProductsTypes {
   star?: number,
   description?: string,
   image: string | StaticImageData,
-  rated?: string,
+  discount?: number,
+  reviews?: number,
   quantity: number
 
 }
