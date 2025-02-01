@@ -15,14 +15,29 @@ import { RxCross2 } from "react-icons/rx";
 import { deleteItem } from "@/redux/slice";
 import { client } from "@/sanity/lib/client";
 
+type FormData = {
+  firstName: string;
+  companyName: string;
+  streetAddress: string;
+  apartment: string;
+  town: string;
+  phone: string;
+  email: string;
+  saveInfo: boolean;
+};
+
+type FormErrors = {
+  [key in keyof FormData]?: string;
+};
+
 const BillingDetails = () => {
   const dispatch = useDispatch();
   const [bankError, setBankError] = useState(false);
   const [couponCodeError, setCouponCodeError] = useState(false);
   const [total, setTotal] = useState(0);
   const [hasPlacedOrder, setHasPlacedOrder] = useState(false);
-  const [formErrors, setFormErrors] = useState<any>({});
-  const [formData, setFormData] = useState<any>({
+  const [formErrors, setFormErrors] = useState<FormErrors>({});
+  const [formData, setFormData] = useState<FormData>({
     firstName: "",
     companyName: "",
     streetAddress: "",
@@ -35,6 +50,7 @@ const BillingDetails = () => {
 
   const products = useSelector((state: RootState) => state.products.products);
   const userInfo = useSelector((state: RootState) => state.products.userInfo);
+
   useEffect(() => {
     const totalAmount = products.reduce((acc, item) => {
       const price = (item.price as number) || 0;
@@ -72,10 +88,10 @@ const BillingDetails = () => {
   ];
 
   const validateForm = () => {
-    let errors: any = {};
+    let errors: FormErrors = {};
     billingForm.forEach((item) => {
-      if (item.required && !formData[item.field]) {
-        errors[item.field] = `${item.title} is required`;
+      if (item.required && !formData[item.field as keyof FormData]) {
+        errors[item.field as keyof FormData] = `${item.title} is required`;
       }
     });
     return errors;
@@ -83,21 +99,21 @@ const BillingDetails = () => {
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    field: string
+    field: keyof FormData
   ) => {
-    setFormData((prevData: any) => ({
+    setFormData((prevData) => ({
       ...prevData,
       [field]: e.target.value,
     }));
 
-    setFormErrors((prevErrors: any) => ({
+    setFormErrors((prevErrors) => ({
       ...prevErrors,
       [field]: "",
     }));
   };
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prevData: any) => ({
+    setFormData((prevData) => ({
       ...prevData,
       saveInfo: e.target.checked,
     }));
@@ -175,10 +191,8 @@ const BillingDetails = () => {
 
       try {
         const existingOrder = await client.fetch(
-           `*[_type == "order" && userLoginEmail == "${userInfo?.email}" && userLoginPassword == "${userInfo?.password}"][0]`
-
+          `*[_type == "order" && userLoginEmail == "${userInfo?.email}" && userLoginPassword == "${userInfo?.password}"][0]`
         );
-        console.log("existingOrder", existingOrder);
 
         if (existingOrder) {
           const updatedOrder = await client
@@ -205,7 +219,10 @@ const BillingDetails = () => {
           setHasPlacedOrder(true);
         }
       } catch (error) {
-        console.error("Error occurred while updating or creating the order:", error);
+        console.error(
+          "Error occurred while updating or creating the order:",
+          error
+        );
       }
     }
   };
@@ -247,13 +264,15 @@ const BillingDetails = () => {
               </p>
               <input
                 type="text"
-                value={formData[item.field]}
-                onChange={(e) => handleInputChange(e, item.field)}
+                value={formData[item.field as keyof FormData] as string}
+                onChange={(e) =>
+                  handleInputChange(e, item.field as keyof FormData)
+                }
                 className={`${poppins.className} h-[50px] rounded-[4px] bg-secondary outline-none px-3`}
               />
-              {formErrors[item.field] && (
+              {formErrors[item.field as keyof FormData] && (
                 <p className={`${poppins.className} text-[14px] text-red-500`}>
-                  {formErrors[item.field]}
+                  {formErrors[item.field as keyof FormData]}
                 </p>
               )}
             </div>
@@ -435,27 +454,20 @@ const BillingDetails = () => {
               <p
                 className={`${poppins.className} mt-0.5 text-black text-[16px] text-center font-normal`}
               >
-                Coupon Code Not Available
+                Invalid Coupon Code
               </p>
             )}
           </div>
 
-          {/* Place Order Button */}
-          {userInfo !== null ? (
+          {/* Submit Button */}
+          <div className="w-full flex justify-center mt-4">
             <button
               onClick={handleSubmit}
-              className={`${poppins.className} w-[190px] text-[18px] h-[56px] py-4 px-8 rounded-[4px] text-primary bg-carminePink`}
+              className={`${poppins.className} w-[522px] h-[56px] py-4 rounded-[4px] text-white bg-primary`}
             >
-             {hasPlacedOrder ? "Save Changes" : "Place Order"}
+             {hasPlacedOrder ? 'Save Changes' : ' Place Order'}
             </button>
-          ) : (
-            <button
-              className={`${poppins.className} w-full sm:w-[265px] h-[56px] rounded-[4px] py-4 px-12 bg-gray-300 text-[16px] leading-[24px] font-medium text-primary cursor-not-allowed`}
-              disabled
-            >
-              Login to Place Order
-            </button>
-          )}
+          </div>
         </div>
       </div>
     </Wrapper>
