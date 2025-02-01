@@ -88,7 +88,7 @@ const BillingDetails = () => {
   ];
 
   const validateForm = () => {
-    const errors: FormErrors = {};
+    const  errors: FormErrors = {};
     billingForm.forEach((item) => {
       if (item.required && !formData[item.field as keyof FormData]) {
         errors[item.field as keyof FormData] = `${item.title} is required`;
