@@ -67,6 +67,9 @@ export const ProductsSlice = createSlice({
       state.userInfo = null;
       state.products = [];
     },
+    clearProducts: (state) => {
+      state.products = [];
+    }
   },
 });
 
@@ -77,5 +80,6 @@ export const {
   decreaseQuantity,
   setUserInfo,
   signOut,
+  clearProducts
 } = ProductsSlice.actions;
 export default ProductsSlice.reducer;
