@@ -96,23 +96,7 @@ const Home = () => {
     getData();
   }, [userInfo?.email]);
 
-  const formatDate = (date: string): string => {
-    return new Date(date).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
-  const calculateDeliveryDate = (orderDate: string): string => {
-    const parsedDate = new Date(orderDate);
-    parsedDate.setDate(parsedDate.getDate() + 7);
-    return parsedDate.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
+  
 
   return (
     

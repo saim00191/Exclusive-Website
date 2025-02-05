@@ -29,7 +29,7 @@ const Home = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [router]);
+  }, [router,dispatch]);
 
   return (
     <Wrapper className="flex flex-col gap-6 items-center justify-center py-20 space-y-2">
