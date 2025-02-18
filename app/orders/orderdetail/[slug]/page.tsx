@@ -4,8 +4,14 @@ import OrderPageClient from '@/components/Orders/OrderDetails/OrderDetailsClient
 import LoadingSpinner from "@/shared/LoadingSpinner";
 import { OrderData } from "@/components/Orders/OrderDetails/types";
 
-export default async function OrderPage({ params }: { params: { slug: string } }) {
-  const slug = params.slug;
+interface OrderPageProps {
+  params: {
+    slug: string;
+  };
+}
+
+export default async function OrderPage({ params }: OrderPageProps) {
+  const { slug } = await params;
   const data = await getData(slug);
 
   return (
