@@ -5,9 +5,7 @@ import LoadingSpinner from "@/shared/LoadingSpinner";
 import { OrderData } from "@/components/Orders/OrderDetails/types";
 
 interface OrderPageProps {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>;
 }
 
 export default async function OrderPage({ params }: OrderPageProps) {
