@@ -31,4 +31,10 @@ export interface OrderData {
     paymentStatus: string
     orderDate: string
     shippingDate: string | null
-  }
+}
+  
+export interface ImageType {
+  asset: {
+    _ref: string;
+  };
+}

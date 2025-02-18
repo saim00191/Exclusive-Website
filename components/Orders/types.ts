@@ -1,9 +1,11 @@
+import {Product} from './OrderDetails/types'
+
 export interface Order {
     orderId: string
     firstName: string
     orderDate: string
     shippingDate: string
-    products: any[]
+    products: Product[]
   }
   
   export interface UserInfo {

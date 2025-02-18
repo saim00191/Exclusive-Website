@@ -5,14 +5,14 @@ import { AiOutlineMinus } from "react-icons/ai"
 import { MdDelete } from "react-icons/md"
 import { client } from "@/sanity/lib/client"
 import imageUrlBuilder from "@sanity/image-url"
-import type { Product, OrderData } from "@/components/Orders/OrderDetails/types"
+import type { Product, OrderData ,ImageType } from "@/components/Orders/OrderDetails/types"
 import { Poppins } from "next/font/google"
 
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] })
 const builder = imageUrlBuilder(client)
 
-function urlFor(source: any) {
+function urlFor(source: ImageType) {
   return builder.image(source)
 }
 
