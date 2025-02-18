@@ -1,127 +1,59 @@
+import { Suspense } from 'react';
+import { client } from "@/sanity/lib/client";
+import OrderPageClient from '@/components/Orders/OrderDetails/OrderDetailsClient';
+import LoadingSpinner from "@/shared/LoadingSpinner";
+import { OrderData } from "@/components/Orders/OrderDetails/types";
 
-
-"use client"
-import { client } from "@/sanity/lib/client"
-import Wrapper from "@/shared/Wrapper"
-import { useEffect, useState } from "react"
-import Link from "next/link"
-import  { OrderData } from "@/components/Orders/OrderDetails/types"
-import OrderDetails from "@/components/Orders/OrderDetails/OrderDetails"
-import ProductList from "@/components/Orders/OrderDetails/ProductDetails"
-import OrderSummary from "@/components/Orders/OrderDetails/OrderSummary"
-
-interface OrderPageProps {
-  params: {
-    slug: string
-  }
-}
-
-export default function OrderPage({ params }: OrderPageProps) {
-  const slug = params.slug
-  const [data, setData] = useState<OrderData | null>(null)
-  const [formattedShippingDate, setFormattedShippingDate] = useState<string | null>(null)
-  const [formattedOrderDate, setFormattedOrderDate] = useState<string | null>(null)
-
-  useEffect(() => {
-    async function getData() {
-      try {
-        const response = await client.fetch(
-          `*[_type == "order" && orderId == $slug] {
-            _id,
-            orderId,
-            userLoginName,
-            userLoginEmail,
-            firstName,
-            company,
-            address,
-            city,
-            phone,
-            email,
-            products[] {
-              _key,
-              productId,
-              productImage {
-                _type,
-                asset {
-                  _ref
-                }
-              },
-              productName,
-              quantity,
-              price,
-              totalPrice
-            },
-            totalAmount,
-            orderStatus,
-            paymentStatus,
-            orderDate,
-            shippingDate
-          }`,
-          { slug },
-        )
-        setData(response[0])
-      } catch (error) {
-        console.error("Error fetching data:", error)
-      }
-    }
-    getData()
-  }, [slug])
-
-  useEffect(() => {
-    if (data) {
-      setFormattedOrderDate(new Date(data.orderDate).toLocaleDateString("en-GB"))
-      setFormattedShippingDate(
-        data.shippingDate
-          ? new Date(data.shippingDate).toLocaleDateString("en-GB")
-          : new Date(new Date(data.orderDate).getTime() + 8 * 24 * 60 * 60 * 1000).toLocaleDateString("en-GB"),
-      )
-    }
-  }, [data])
-
-  if (!data) {
-    return (
-      <div className="w-full h-full flex justify-center items-center col-span-full py-8">
-        <div className="animate-spin rounded-full h-20 w-20 border-t-4 border-red-500"></div>
-      </div>
-    )
-  }
-
-  if (data.products.length === 0) {
-    return (
-      <Wrapper className="px-4 py-10">
-        <OrderDetails
-          slug={slug}
-          firstName={data.firstName}
-          formattedOrderDate={formattedOrderDate}
-          formattedShippingDate={formattedShippingDate}
-        />
-        <p className="text-[18px] text-black font-medium mt-4">No products found in this order.</p>
-        <Link
-          href="/orders"
-          className="w-[200px] h-[56px] py-4 flex items-center justify-center rounded-[4px] border border-carminePink text-black hover:text-white hover:bg-carminePink mt-4"
-        >
-          <p className="text-[16px]">Back to Orders</p>
-        </Link>
-      </Wrapper>
-    )
-  }
+export default async function OrderPage({ params }: { params: { slug: string } }) {
+  const slug = params.slug;
+  const data = await getData(slug);
 
   return (
-    <Wrapper className="px-4 py-10">
-      <OrderDetails
-        slug={slug}
-        firstName={data.firstName}
-        formattedOrderDate={formattedOrderDate}
-        formattedShippingDate={formattedShippingDate}
-      />
-      <ProductList products={data.products} />
-      <OrderSummary data={data} />
-    </Wrapper>
-  )
+    <Suspense fallback={<LoadingSpinner />}>
+      <OrderPageClient initialData={data} slug={slug} />
+    </Suspense>
+  );
 }
 
-
-
-
-
-
+async function getData(slug: string): Promise<OrderData | null> {
+  try {
+    const response = await client.fetch(
+      `*[_type == "order" && orderId == $slug] {
+        _id,
+        orderId,
+        userLoginName,
+        userLoginEmail,
+        firstName,
+        company,
+        address,
+        city,
+        phone,
+        email,
+        products[] {
+          _key,
+          productId,
+          productImage {
+            _type,
+            asset {
+              _ref
+            }
+          },
+          productName,
+          quantity,
+          price,
+          totalPrice
+        },
+        totalAmount,
+        orderStatus,
+        paymentStatus,
+        orderDate,
+        shippingDate
+      }`,
+      { slug },
+    );
+    return response[0] || null;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return null;
+  }
+}
