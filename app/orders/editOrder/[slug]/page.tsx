@@ -3,9 +3,7 @@ import EditOrderClient from '@/components/Orders/EditOrder/EditOrderClient';
 import LoadingSpinner from "@/shared/LoadingSpinner";
 
 interface EditOrderProps {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>;
 }
 
 export default async function EditOrder({ params }: EditOrderProps) {
