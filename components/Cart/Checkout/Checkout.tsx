@@ -124,12 +124,12 @@ const BillingDetails = () => {
       setFormErrors(errors)
     } else {
       setFormErrors({})
-      setIsLoading(true) // Add this line to set loading state
-
+      setIsLoading(true)
+  
       const productsWithImages = await Promise.all(
         products.map(async (product, index) => {
           let productImage
-
+  
           if (typeof product.img === "string") {
             const response = await fetch(product.img)
             const blob = await response.blob()
@@ -155,7 +155,7 @@ const BillingDetails = () => {
           } else {
             productImage = product.img
           }
-
+  
           return {
             productId: product.id,
             productImage,
@@ -167,7 +167,7 @@ const BillingDetails = () => {
           }
         }),
       )
-
+  
       // Prepare the order data
       const orderData = {
         _type: "order",
@@ -188,39 +188,15 @@ const BillingDetails = () => {
         orderDate: new Date().toISOString(),
         shippingDate: "",
       }
-
+  
       try {
-        const existingOrder = await client.fetch(
-          `*[_type == "order" && userLoginEmail == "${userInfo?.email}" && userLoginPassword == "${userInfo?.password}"][0]`,
-        )
-
-        if (existingOrder) {
-          const updatedOrder = await client
-            .patch(existingOrder._id)
-            .set({
-              products: productsWithImages,
-              totalAmount: total,
-              firstName: formData.firstName,
-              company: formData.companyName,
-              address: formData.streetAddress,
-              city: formData.town,
-              phone: formData.phone,
-              email: formData.email,
-              orderStatus: "pending",
-              paymentStatus: "pending",
-              orderDate: new Date().toISOString(),
-            })
-            .commit()
-          console.log("Order updated successfully:", updatedOrder)
-        } else {
-          const result = await client.create(orderData)
-          console.log("Order created successfully:", result)
-        }
+        const result = await client.create(orderData)
+        console.log("Order created successfully:", result)
         router.push("/orders/ordersuccess")
       } catch (error) {
-        console.error("Error occurred while updating or creating the order:", error)
+        console.error("Error occurred while creating the order:", error)
       } finally {
-        setIsLoading(false) // Add this line to reset loading state
+        setIsLoading(false)
       }
     }
   }

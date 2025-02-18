@@ -14,7 +14,7 @@ const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 const Home = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const [countdown, setCountdown] = useState(4);
+  const [countdown, setCountdown] = useState(6);
 
   useEffect(() => {
     dispatch(clearProducts());
