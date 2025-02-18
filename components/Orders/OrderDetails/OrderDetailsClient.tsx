@@ -14,7 +14,7 @@ interface OrderPageClientProps {
 }
 
 export default function OrderPageClient({ initialData, slug }: OrderPageClientProps) {
-  const [data, setData] = useState<OrderData | null>(initialData);
+  const [data] = useState<OrderData | null>(initialData);
   const [formattedShippingDate, setFormattedShippingDate] = useState<string | null>(null);
   const [formattedOrderDate, setFormattedOrderDate] = useState<string | null>(null);
 
