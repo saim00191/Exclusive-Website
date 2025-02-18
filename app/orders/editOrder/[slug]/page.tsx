@@ -9,7 +9,8 @@ interface EditOrderProps {
 }
 
 export default async function EditOrder({ params }: EditOrderProps) {
-  const { slug } = await params;
+  
+  const {slug} = await params;
 
   return (
     <Suspense fallback={<LoadingSpinner />}>
@@ -17,3 +18,4 @@ export default async function EditOrder({ params }: EditOrderProps) {
     </Suspense>
   );
 }
+
