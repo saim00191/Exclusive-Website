@@ -1,8 +1,8 @@
 import { Rule } from "sanity";
 
 export default {
-  name: "order",
-  title: "Order",
+  name: "reactivateOrder",
+  title: "Reactivated Orders",
   type: "document",
   fields: [
     {

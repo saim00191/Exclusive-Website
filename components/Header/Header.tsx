@@ -195,6 +195,13 @@ const Header = () => {
                             >
                               Orders
                             </Link>
+                            <Link
+                              href="/cancellations"
+                              className={`${poppins.className} block px-4 py-2 text-gray-700 hover:bg-gray-100`}
+                              onClick={() => setIsUserDropdownOpen(false)}
+                            >
+                              My Cancellations
+                            </Link>
 
                             <button
                               className={`${poppins.className} w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100`}

@@ -1,8 +1,8 @@
 import { Rule } from "sanity";
 
 export default {
-  name: "order",
-  title: "Order",
+  name: "cancelOrder",
+  title: "Cancelled Order",
   type: "document",
   fields: [
     {
@@ -36,12 +36,6 @@ export default {
       title: "Buyer Name",
       type: "string",
       description: "Buyer Name",
-    },
-    {
-      name: "company",
-      title: "Company Name",
-      type: "string",
-      description: "Company Name",
     },
     {
       name: "address",
@@ -144,7 +138,7 @@ export default {
         layout: "radio",
       },
       description: "The current status of the order",
-      validation: (Rule: any) => Rule.required(),
+      validation: (Rule: Rule) => Rule.required(),
     },
     {
       name: "paymentStatus",
@@ -169,18 +163,9 @@ export default {
       validation: (Rule: Rule) => Rule.required(),
     },
     {
-      name: "shippingDate",
-      title: "Shipping Date",
-      type: "datetime",
-      description: "The date and time when the order was shipped",
-      validation: (Rule: Rule) => Rule.required(),
-    },
-    {
-      name: "reactivatedAt",
-      title: "Reactivated Date",
-      type: "datetime",
-      description: "The date and time when the order was reactivated",
-      validation: (Rule: Rule) => Rule.required(),
+      name: "cancelledAt",
+      title: "Cancelled At",
+      type: "datetime", 
     },
   ],
 };

@@ -30,7 +30,8 @@ export interface OrderData {
     orderStatus: string
     paymentStatus: string
     orderDate: string
-    shippingDate: string | null
+  shippingDate: string | null
+  cancelledAt: string
 }
   
 export interface ImageType {

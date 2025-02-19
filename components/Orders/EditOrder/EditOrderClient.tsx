@@ -1,40 +1,37 @@
-"use client";
+"use client"
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { client } from "@/sanity/lib/client";
-import Wrapper from "@/shared/Wrapper";
-import OrderDetails from "@/components/Orders/EditOrder/OrderDetails";
-import ProductList from "@/components/Orders/EditOrder/ProductList";
-import EditDetailsModal from "@/components/Orders/EditOrder/EditOrderModal";
-import type { OrderData } from "@/components/Orders/OrderDetails/types";
-import LoadingSpinner from "@/shared/LoadingSpinner";
-import { Poppins } from 'next/font/google';
-import CancelOrderModal from "@/components/Orders/EditOrder/CancelOrder";
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import { client } from "@/sanity/lib/client"
+import Wrapper from "@/shared/Wrapper"
+import OrderDetails from "@/components/Orders/EditOrder/OrderDetails"
+import ProductList from "@/components/Orders/EditOrder/ProductList"
+import EditDetailsModal from "@/components/Orders/EditOrder/EditOrderModal"
+import type { OrderData } from "@/components/Orders/OrderDetails/types"
+import LoadingSpinner from "@/shared/LoadingSpinner"
+import { Poppins } from "next/font/google"
+import CancelOrderModal from "@/components/Orders/EditOrder/CancelOrder"
 
-const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
+const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] })
 
 export default function EditOrderClient({ slug }: { slug: string }) {
-  const router = useRouter();
-  const [data, setData] = useState<OrderData | null>(null);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editField, setEditField] = useState("");
-  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+  const router = useRouter()
+  const [data, setData] = useState<OrderData | null>(null)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [editField, setEditField] = useState("")
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false)
 
   useEffect(() => {
     async function getData() {
       try {
-        const response = await client.fetch(
-          `*[_type == "order" && orderId == $slug][0]`,
-          { slug }
-        );
-        setData(response);
+        const response = await client.fetch(`*[_type == "order" && orderId == $slug][0]`, { slug })
+        setData(response)
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching data:", error)
       }
     }
-    getData();
-  }, [slug]);
+    getData()
+  }, [slug])
 
   const handleSaveChanges = async () => {
     if (data && data._id) {
@@ -50,57 +47,54 @@ export default function EditOrderClient({ slug }: { slug: string }) {
             city: data.city,
             phone: data.phone,
           })
-          .commit();
+          .commit()
 
-        console.log("Order updated successfully:", updatedOrder);
+        console.log("Order updated successfully:", updatedOrder)
 
         if (data.products.length === 0) {
-          router.push("/");
+          router.push("/")
         } else {
-          const refreshedData = await client.fetch(
-            `*[_type == "order" && _id == $id][0]`,
-            { id: data._id }
-          );
-          setData(refreshedData);
+          const refreshedData = await client.fetch(`*[_type == "order" && _id == $id][0]`, { id: data._id })
+          setData(refreshedData)
         }
       } catch (error) {
-        console.error("Error saving changes:", error);
+        console.error("Error saving changes:", error)
       }
     }
-  };
+  }
 
   const handleEditField = (field: string) => {
-    setEditField(field);
-    setIsEditModalOpen(true);
-  };
+    setEditField(field)
+    setIsEditModalOpen(true)
+  }
 
   const handleUpdateField = (field: string, value: string) => {
     setData((prevData) => {
       if (prevData) {
-        return { ...prevData, [field]: value };
+        return { ...prevData, [field]: value }
       }
-      return prevData;
-    });
-  };
+      return prevData
+    })
+  }
 
   const handleCancelOrder = () => {
-    setIsCancelModalOpen(true);
-  };
+    setIsCancelModalOpen(true)
+  }
 
   const confirmCancelOrder = async () => {
     if (data && data._id) {
       try {
-        await client.delete(data._id);
-        console.log("Order deleted successfully");
-        router.push("/orders");
+        await client.delete(data._id)
+        console.log("Order deleted successfully")
+        router.push("/orders")
       } catch (error) {
-        console.error("Error deleting order:", error);
+        console.error("Error deleting order:", error)
       }
     }
-  };
+  }
 
   if (!data) {
-    return <LoadingSpinner />;
+    return <LoadingSpinner />
   }
 
   return (
@@ -110,8 +104,7 @@ export default function EditOrderClient({ slug }: { slug: string }) {
           Edit Order
         </h1>
         <h3 className="text-[18px] mt-6 text-black font-medium">
-          Order ID:{" "}
-          <span className="text-[20px] text-black font-medium">{slug}</span>
+          Order ID: <span className="text-[20px] text-black font-medium">{slug}</span>
         </h3>
 
         <ProductList products={data.products} setData={setData} />
@@ -149,8 +142,10 @@ export default function EditOrderClient({ slug }: { slug: string }) {
       <CancelOrderModal
         isOpen={isCancelModalOpen}
         onClose={() => setIsCancelModalOpen(false)}
-        onConfirm={confirmCancelOrder} 
+        onConfirm={confirmCancelOrder}
+        orderDetails={data}
       />
     </Wrapper>
-  );
+  )
 }
+

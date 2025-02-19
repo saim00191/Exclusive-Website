@@ -5,7 +5,8 @@ export interface Order {
     firstName: string
     orderDate: string
     shippingDate: string
-    products: Product[]
+  products: Product[]
+  cancelledAt: string 
   }
   
   export interface UserInfo {
