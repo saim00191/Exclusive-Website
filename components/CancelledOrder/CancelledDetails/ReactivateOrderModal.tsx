@@ -53,7 +53,7 @@ export function ReactivateOrderModal({ isOpen, onClose, onConfirm, orderDetails 
   const [isReactivating, setIsReactivating] = useState(false);
   const router = useRouter();
   const [countdown, setCountdown] = useState(4);
-
+  console.log(countdown)
   const sendReactivateOrderToSanity = async () => {
     setIsReactivating(true);
     try {
@@ -71,7 +71,7 @@ export function ReactivateOrderModal({ isOpen, onClose, onConfirm, orderDetails 
       const orderParams = { orderId: orderDetails.orderId };
       const existingOrder = await client.fetch(orderQuery, orderParams);
   
-      let createdOrderId = null;
+  
   
       if (!existingOrder) {
         console.log("Creating new order document as original was not found");
@@ -98,7 +98,8 @@ export function ReactivateOrderModal({ isOpen, onClose, onConfirm, orderDetails 
           throw new Error("Failed to create new order");
         }
   
-        createdOrderId = createdOrder._id;
+        let createdOrderId = createdOrder._id;
+        console.log(createdOrderId)
       } else {
         // Update the existing order
         await client
