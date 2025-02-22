@@ -105,11 +105,9 @@ export function ReactivateOrderModal({
         console.error(error);
       }
 
-      let orderId;
-
       if (!existingOrder) {
         try {
-          const createdOrder = await client.create({
+          await client.create({
             _type: "order",
             orderId: orderDetails.orderId,
             userLoginName:
@@ -127,12 +125,6 @@ export function ReactivateOrderModal({
             orderDate: orderDetails.orderDate,
             reactivatedAt: new Date().toISOString(),
           });
-
-          if (!createdOrder?._id) {
-            throw new Error("Failed to create new order");
-          }
-
-          orderId = createdOrder._id;
         } catch (error) {
           throw error;
         }
@@ -146,23 +138,16 @@ export function ReactivateOrderModal({
               reactivatedAt: new Date().toISOString(),
             })
             .commit();
-
-          orderId = existingOrder._id;
-        } catch (patchError) {
-          try {
-            const createdOrder = await client.create({
-              _type: "order",
-              ...existingOrder,
-              _id: undefined,
-              orderStatus: "pending",
-              paymentStatus: "pending",
-              reactivatedAt: new Date().toISOString(),
-            });
-
-            orderId = createdOrder._id;
-          } catch (error) {
-            throw error;
-          }
+        } catch (error) {
+          // If patch fails, create a new order
+          await client.create({
+            _type: "order",
+            ...existingOrder,
+            _id: undefined,
+            orderStatus: "pending",
+            paymentStatus: "pending",
+            reactivatedAt: new Date().toISOString(),
+          });
         }
       }
 
@@ -191,24 +176,17 @@ export function ReactivateOrderModal({
             .patch(existingReactivatedOrder._id)
             .set(reactivationData)
             .commit();
-        } catch (patchError) {
-          console.log(patchError)
-          try {
-            const createdReactivation = await client.create({
-              _type: "reactivateOrder",
-              ...reactivationData,
-            });
-            console.log(
-              `Created new reactivated order after patch failure: ${createdReactivation._id}`
-            );
-          } catch (error) {
-            console.error("Error creating new reactivated order:", error);
-            throw error;
-          }
+        } catch (error) {
+          console.log(error);
+          // If patch fails, create new reactivation order
+          await client.create({
+            _type: "reactivateOrder",
+            ...reactivationData,
+          });
         }
       } else {
         try {
-          const createdReactivation = await client.create({
+          await client.create({
             _type: "reactivateOrder",
             ...reactivationData,
           });
@@ -220,8 +198,8 @@ export function ReactivateOrderModal({
       if (cancelledOrder?._id) {
         try {
           await client.delete(cancelledOrder._id);
-        } catch (deleteError) {
-          console.error(deleteError)
+        } catch (error) {
+          console.error(error);
         }
       }
 
