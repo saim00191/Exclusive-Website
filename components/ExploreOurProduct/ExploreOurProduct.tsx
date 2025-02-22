@@ -45,7 +45,7 @@ const ExploreOurProduct = () => {
         setData(response);
         setLoading(false); // set loading to false after data is fetched
       } catch (error) {
-        
+        console.log(error)
         setLoading(false); // set loading to false if there's an error
       }
     }

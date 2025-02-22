@@ -72,7 +72,9 @@ export function ReactivateOrderModal({
           reactivatedOrderQuery,
           reactivatedOrderParams
         );
-      } catch (error) {}
+      } catch (error) {
+        console.error(error);
+      }
 
       const cancelOrderQuery = `*[_type == "cancelOrder" && orderId == $orderId][0]`;
       const cancelOrderParams = { orderId: orderDetails.orderId };
@@ -83,7 +85,9 @@ export function ReactivateOrderModal({
           cancelOrderQuery,
           cancelOrderParams
         );
-      } catch (error) {}
+      } catch (error) {
+        console.error(error);
+      }
 
       if (!cancelledOrder) {
         console.warn(
@@ -97,7 +101,9 @@ export function ReactivateOrderModal({
 
       try {
         existingOrder = await client.fetch(orderQuery, orderParams);
-      } catch (error) {}
+      } catch (error) {
+        console.error(error);
+      }
 
       let orderId;
 
@@ -186,6 +192,7 @@ export function ReactivateOrderModal({
             .set(reactivationData)
             .commit();
         } catch (patchError) {
+          console.log(patchError)
           try {
             const createdReactivation = await client.create({
               _type: "reactivateOrder",
@@ -213,7 +220,9 @@ export function ReactivateOrderModal({
       if (cancelledOrder?._id) {
         try {
           await client.delete(cancelledOrder._id);
-        } catch (deleteError) {}
+        } catch (deleteError) {
+          console.error(deleteError)
+        }
       }
 
       const timer = setInterval(() => {

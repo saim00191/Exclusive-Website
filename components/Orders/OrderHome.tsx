@@ -40,6 +40,8 @@ const Home: React.FC = () => {
         setData(ordersWithProducts)
 
       } catch (error) {
+        console.error(error)
+        setLoading(false)
       } finally {
         setLoading(false)
       }

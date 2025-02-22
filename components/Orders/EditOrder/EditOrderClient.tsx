@@ -36,7 +36,7 @@ export default function EditOrderClient({ slug }: { slug: string }) {
   const handleSaveChanges = async () => {
     if (data && data._id) {
       try {
-        const updatedOrder = await client
+        await client
           .patch(data._id)
           .set({
             products: data.products,
@@ -49,7 +49,7 @@ export default function EditOrderClient({ slug }: { slug: string }) {
           })
           .commit()
 
-
+  
         if (data.products.length === 0) {
           router.push("/")
         } else {
@@ -86,6 +86,7 @@ export default function EditOrderClient({ slug }: { slug: string }) {
         await client.delete(data._id)
         router.push("/orders")
       } catch (error) {
+        console.log(error)
       }
     }
   }

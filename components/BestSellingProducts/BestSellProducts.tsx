@@ -47,6 +47,7 @@ const BestSellProducts = () => {
         setData(response);
         setLoading(false); 
       } catch (error) {
+        console.error(error);
         setLoading(false); 
       }
     }

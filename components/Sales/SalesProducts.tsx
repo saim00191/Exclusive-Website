@@ -43,10 +43,10 @@ const SalesProducts = () => {
           }`
         );
         setData(response);
-        setLoading(false); // set loading to false after data is fetched
+        setLoading(false);
       } catch (error) {
-      
-        setLoading(false); // set loading to false if there's an error
+        console.log(error)
+        setLoading(false); 
       }
     }
     getData();

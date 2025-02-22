@@ -191,9 +191,10 @@ const BillingDetails = () => {
   
       try {
         const result = await client.create(orderData)
+        console.log(result)
         router.push("/orders/ordersuccess")
       } catch (error) {
-       
+       console.error(error)
       } finally {
         setIsLoading(false)
       }
