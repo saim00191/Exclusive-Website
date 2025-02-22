@@ -139,7 +139,7 @@ export function ReactivateOrderModal({
             })
             .commit();
         } catch (error) {
-          // If patch fails, create a new order
+          console.error(error);
           await client.create({
             _type: "order",
             ...existingOrder,
