@@ -27,7 +27,7 @@ const MusicExperience = () => {
           >
             Enhance Your Music Experience
           </h2>
-          <div className="w-[320px]  h-[62px] flex gap-[24px] mt-5 lg:mt-0">
+          <div className="w-[320px] hidden  h-[62px] xs:flex gap-[24px] mt-5 lg:mt-0">
             {timer.map((item, index) => (
               <div
                 key={index}

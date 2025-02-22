@@ -48,73 +48,119 @@ interface ReactivateOrderModalProps {
   orderDetails: OrderDetails;
 }
 
-export function ReactivateOrderModal({ isOpen, onClose, onConfirm, orderDetails }: ReactivateOrderModalProps) {
+export function ReactivateOrderModal({
+  isOpen,
+  onClose,
+  onConfirm,
+  orderDetails,
+}: ReactivateOrderModalProps) {
   const userInfo = useSelector((state: RootState) => state.products.userInfo);
   const [isReactivating, setIsReactivating] = useState(false);
   const router = useRouter();
-  const [countdown, setCountdown] = useState(4);
-  console.log(countdown)
+  const [countdown, setCountdown] = useState(2);
+  console.log(countdown);
   const sendReactivateOrderToSanity = async () => {
     setIsReactivating(true);
+
     try {
-      // First, check the cancelOrder collection for the original order
+      const reactivatedOrderQuery = `*[_type == "reactivateOrder" && orderId == $orderId][0]`;
+      const reactivatedOrderParams = { orderId: orderDetails.orderId };
+      let existingReactivatedOrder;
+
+      try {
+        existingReactivatedOrder = await client.fetch(
+          reactivatedOrderQuery,
+          reactivatedOrderParams
+        );
+      } catch (error) {}
+
       const cancelOrderQuery = `*[_type == "cancelOrder" && orderId == $orderId][0]`;
       const cancelOrderParams = { orderId: orderDetails.orderId };
-      const cancelledOrder = await client.fetch(cancelOrderQuery, cancelOrderParams);
-  
+      let cancelledOrder;
+
+      try {
+        cancelledOrder = await client.fetch(
+          cancelOrderQuery,
+          cancelOrderParams
+        );
+      } catch (error) {}
+
       if (!cancelledOrder) {
-        throw new Error(`Cancelled order with ID ${orderDetails.orderId} not found`);
+        console.warn(
+          `Cancelled order with ID ${orderDetails.orderId} not found. Proceeding with reactivation.`
+        );
       }
-  
-      // Query the original order
+
       const orderQuery = `*[_type == "order" && orderId == $orderId][0]`;
       const orderParams = { orderId: orderDetails.orderId };
-      const existingOrder = await client.fetch(orderQuery, orderParams);
-  
-  
-  
+      let existingOrder;
+
+      try {
+        existingOrder = await client.fetch(orderQuery, orderParams);
+      } catch (error) {}
+
+      let orderId;
+
       if (!existingOrder) {
-        console.log("Creating new order document as original was not found");
-        // Create a new order document if the original is not found
-        const createdOrder = await client.create({
-          _type: "order",
-          orderId: orderDetails.orderId,
-          userLoginName: userInfo?.displayName || cancelledOrder.userLoginName,
-          userLoginEmail: userInfo?.email || cancelledOrder.userLoginEmail,
-          firstName: orderDetails.firstName,
-          address: orderDetails.address,
-          city: orderDetails.city,
-          phone: orderDetails.phone,
-          email: orderDetails.email,
-          products: orderDetails.products,
-          totalAmount: orderDetails.totalAmount,
-          orderStatus: "pending",
-          paymentStatus: "pending",
-          orderDate: orderDetails.orderDate,
-          reactivatedAt: new Date().toISOString(),
-        });
-  
-        if (!createdOrder?._id) {
-          throw new Error("Failed to create new order");
-        }
-  
-        let createdOrderId = createdOrder._id;
-        console.log(createdOrderId)
-      } else {
-        // Update the existing order
-        await client
-          .patch(existingOrder._id)
-          .set({
+        try {
+          const createdOrder = await client.create({
+            _type: "order",
+            orderId: orderDetails.orderId,
+            userLoginName:
+              userInfo?.displayName || cancelledOrder?.userLoginName,
+            userLoginEmail: userInfo?.email || cancelledOrder?.userLoginEmail,
+            firstName: orderDetails.firstName,
+            address: orderDetails.address,
+            city: orderDetails.city,
+            phone: orderDetails.phone,
+            email: orderDetails.email,
+            products: orderDetails.products,
+            totalAmount: orderDetails.totalAmount,
             orderStatus: "pending",
             paymentStatus: "pending",
+            orderDate: orderDetails.orderDate,
             reactivatedAt: new Date().toISOString(),
-          })
-          .commit();
+          });
+
+          if (!createdOrder?._id) {
+            throw new Error("Failed to create new order");
+          }
+
+          orderId = createdOrder._id;
+        } catch (error) {
+          throw error;
+        }
+      } else {
+        try {
+          await client
+            .patch(existingOrder._id)
+            .set({
+              orderStatus: "pending",
+              paymentStatus: "pending",
+              reactivatedAt: new Date().toISOString(),
+            })
+            .commit();
+
+          orderId = existingOrder._id;
+        } catch (patchError) {
+          try {
+            const createdOrder = await client.create({
+              _type: "order",
+              ...existingOrder,
+              _id: undefined,
+              orderStatus: "pending",
+              paymentStatus: "pending",
+              reactivatedAt: new Date().toISOString(),
+            });
+
+            orderId = createdOrder._id;
+          } catch (error) {
+            throw error;
+          }
+        }
       }
-  
-      // Create a reactivation record
-      await client.create({
-        _type: "reactivateOrder",
+
+      const reactivationData = {
         orderId: orderDetails.orderId,
         userLoginName: userInfo?.displayName,
         userLoginEmail: userInfo?.email,
@@ -129,22 +175,47 @@ export function ReactivateOrderModal({ isOpen, onClose, onConfirm, orderDetails 
         paymentStatus: "pending",
         orderDate: orderDetails.orderDate,
         reactivatedAt: new Date().toISOString(),
-        previousStatus: cancelledOrder.orderStatus,
-        previousPaymentStatus: cancelledOrder.paymentStatus,
-      });
-  
-      // Ensure cancelledOrder._id exists before deletion
-      if (cancelledOrder._id) {
-        setTimeout(async () => {
+        previousStatus: cancelledOrder?.orderStatus || "unknown",
+        previousPaymentStatus: cancelledOrder?.paymentStatus || "unknown",
+      };
+
+      if (existingReactivatedOrder) {
+        try {
+          await client
+            .patch(existingReactivatedOrder._id)
+            .set(reactivationData)
+            .commit();
+        } catch (patchError) {
           try {
-            await client.delete(cancelledOrder._id);
-            console.log(`Successfully deleted cancelled order: ${cancelledOrder._id}`);
-          } catch (deleteError) {
-            console.error("Error deleting cancelled order:", deleteError);
+            const createdReactivation = await client.create({
+              _type: "reactivateOrder",
+              ...reactivationData,
+            });
+            console.log(
+              `Created new reactivated order after patch failure: ${createdReactivation._id}`
+            );
+          } catch (error) {
+            console.error("Error creating new reactivated order:", error);
+            throw error;
           }
-        }, 2000); // Small delay before deletion
+        }
+      } else {
+        try {
+          const createdReactivation = await client.create({
+            _type: "reactivateOrder",
+            ...reactivationData,
+          });
+        } catch (error) {
+          throw error;
+        }
       }
-  
+
+      if (cancelledOrder?._id) {
+        try {
+          await client.delete(cancelledOrder._id);
+        } catch (deleteError) {}
+      }
+
       const timer = setInterval(() => {
         setCountdown((prevCount) => {
           if (prevCount === 1) {
@@ -154,7 +225,7 @@ export function ReactivateOrderModal({ isOpen, onClose, onConfirm, orderDetails 
           return prevCount - 1;
         });
       }, 1000);
-  
+
       onConfirm();
       onClose();
       toast.success("Order reactivated successfully.");
@@ -165,15 +236,17 @@ export function ReactivateOrderModal({ isOpen, onClose, onConfirm, orderDetails 
       setIsReactivating(false);
     }
   };
-  
-  
 
   return (
     <Dialog open={isOpen} onClose={onClose} className="relative z-50">
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className={`w-full max-w-sm rounded bg-white p-6 ${poppins.className}`}>
-          <Dialog.Title className="text-lg font-medium mb-4">Reactivate Order</Dialog.Title>
+        <Dialog.Panel
+          className={`w-full max-w-sm rounded bg-white p-6 ${poppins.className}`}
+        >
+          <Dialog.Title className="text-lg font-medium mb-4">
+            Reactivate Order
+          </Dialog.Title>
           <p className="mb-4">
             Are you sure you want to <b>reactivate</b> this order?
           </p>

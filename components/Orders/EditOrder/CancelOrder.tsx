@@ -61,13 +61,20 @@ export default function CancelOrderModal({ isOpen, onClose, onConfirm, orderDeta
     try {
       await new Promise((resolve) => setTimeout(resolve, 3000));
   
-      
       const query = `*[_type == "order" && orderId == $orderId][0]`;
       const params = { orderId: orderDetails.orderId };
       const existingOrder = await client.fetch(query, params);
   
       if (!existingOrder) {
         throw new Error(`Order with ID ${orderDetails.orderId} not found`);
+      }
+  
+      // Check if order exists in reactivateOrder list
+      const reactivateQuery = `*[_type == "reactivateOrder" && orderId == $orderId][0]`;
+      const reactivateOrder = await client.fetch(reactivateQuery, params);
+  
+      if (reactivateOrder) {
+        await client.delete(reactivateOrder._id);
       }
   
       await client
@@ -83,7 +90,6 @@ export default function CancelOrderModal({ isOpen, onClose, onConfirm, orderDeta
         orderId: orderDetails.orderId,
         userLoginName: userInfo?.displayName,
         userLoginEmail: userInfo?.email,
-        userLoginPassword : userInfo?.password,
         firstName: orderDetails.firstName,
         address: orderDetails.address,
         city: orderDetails.city,
@@ -94,7 +100,7 @@ export default function CancelOrderModal({ isOpen, onClose, onConfirm, orderDeta
         orderStatus: "cancelled",
         paymentStatus: "failed",
         orderDate: orderDetails.orderDate,
-        cancelledAt: new Date().toISOString(), 
+        cancelledAt: new Date().toISOString(),
       });
   
       onConfirm();

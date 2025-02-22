@@ -8,7 +8,7 @@ const RightSide = () => {
   return (
     <div className="bg-black w-full lg:w-[892px] relative h-auto ">
       <div className="flex flex-col sm:flex-row  items-center justify-between">
-        <div className="w-[370px] px-12">
+        <div className="max-w-full xs:w-[360px] xs:px-12">
           <div className="w-full justify-center gap-x-4 sm:gap-x-0 sm:w-[190px] h-[49px] -ml-1.5 flex items-center sm:justify-between">
             <Image
               src={AppleImage}
@@ -22,7 +22,7 @@ const RightSide = () => {
             </p>
           </div>
           <h2
-            className={`${inter.className} text-center sm:text-start w-[310px] mt-5  font-semibold text-[40px] xsm:text-[46px] leading-[60px] tracking-[4px] text-white`}
+            className={`${inter.className} text-center sm:text-start w-[310px] mt-5  font-semibold text-[30px] xs:text-[40px] xsm:text-[46px] leading-[60px] tracking-[4px] text-white`}
           >
             Up to 10% off Voucher
           </h2>

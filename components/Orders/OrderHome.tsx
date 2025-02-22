@@ -38,9 +38,8 @@ const Home: React.FC = () => {
         const ordersWithProducts = response.filter((order: Order) => order.products && order.products.length > 0)
 
         setData(ordersWithProducts)
-        console.log("Data fetched:", ordersWithProducts)
+
       } catch (error) {
-        console.error("Error fetching data:", error)
       } finally {
         setLoading(false)
       }

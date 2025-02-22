@@ -7,11 +7,15 @@ import {
 import { app } from "@/firebase/firebase";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 import React, { useState } from "react";
 import image from "@/images/Login.png";
-import { Inter } from 'next/font/google';
-import { Poppins } from 'next/font/google';
+import { Inter } from "next/font/google";
+import { Poppins } from "next/font/google";
 import Link from "next/link";
+import { client } from "@/sanity/lib/client";
+
+
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 const inters = Inter({ subsets: ["latin"], weight: ["400", "700"] });
 const SignUp = () => {
@@ -21,13 +25,11 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [successMsg, setSuccessMsg] = useState<string>("");
-
+  const [isLoading, setIsLoading] = useState(false);
   const [errUsername, setErrUserName] = useState<string>("");
   const [errEmail, setErrEmail] = useState<string>("");
   const [errPassword, setErrPassword] = useState<string>("");
   const [errFirebase, setErrFirebase] = useState<string>("");
-
- 
 
   const handleUserName = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -58,7 +60,7 @@ const SignUp = () => {
 
   const handleRegistration = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    setIsLoading(true);
     setErrUserName("");
     setErrEmail("");
     setErrPassword("");
@@ -68,19 +70,24 @@ const SignUp = () => {
 
     if (!name) {
       setErrUserName("Enter your name");
+      setIsLoading(false);
       hasError = true;
     } else if (name.length > 15) {
       setErrUserName("Name should not exceed 15 characters.");
+      setIsLoading(false);
       hasError = true;
     }
 
     if (!email) {
       setErrEmail("Enter your email");
       hasError = true;
+      setIsLoading(false);
     } else if (!emailValidation(email)) {
+      setIsLoading(false);
       setErrEmail("Enter a valid email");
       hasError = true;
     } else if (email.length > 25) {
+      setIsLoading(false);
       setErrEmail("Email should not exceed 25 characters.");
       hasError = true;
     }
@@ -88,12 +95,15 @@ const SignUp = () => {
     if (!password) {
       setErrPassword("Enter your password");
       hasError = true;
+      setIsLoading(false);
     } else if (password.length < 7) {
       setErrPassword("Passwords must be at least 7 characters.");
       hasError = true;
+      setIsLoading(false);
     } else if (password.length > 15) {
       setErrPassword("Passwords must not exceed 15 characters.");
       hasError = true;
+      setIsLoading(false);
     }
 
     if (!hasError) {
@@ -105,15 +115,18 @@ const SignUp = () => {
             updateProfile(auth.currentUser, {
               displayName: name,
             })
-              .then(() => {
-                console.log("Profile updated successfully");
-              })
-              .catch((error) => {
-                console.error("Error updating profile: ", error);
-              });
+              
           }
 
-          console.log(user);
+          client.create({
+            _type: 'user',
+            userLoginName: name,
+            userLoginEmail: email,
+            userLoginPassword: password, 
+          })
+            
+
+          setIsLoading(false);
           setSuccessMsg("Account created successfully!");
 
           setName("");
@@ -125,10 +138,10 @@ const SignUp = () => {
         })
         .catch((error) => {
           const errorCode = error.code;
+          setIsLoading(false);
           if (errorCode.includes("auth/email-already-in-use")) {
             setErrFirebase("Email already in use. Try another one");
           }
-          console.log(error);
         });
     }
   };
@@ -222,18 +235,29 @@ const SignUp = () => {
                 )}
               </p>
               <div className="flex flex-col gap-[32px]">
-              {successMsg && (
-            <div className={`${poppins.className} mt-4 text-center font-bold uppercase p-2 bg-green-100 text-green-700 rounded`}>
-              {successMsg}
-            </div>
-          )}
+                {successMsg && (
+                  <div
+                    className={`${poppins.className} mt-4 text-center font-bold uppercase p-2 bg-green-100 text-green-700 rounded`}
+                  >
+                    {successMsg}
+                  </div>
+                )}
                 <div className="gap-[16px] flex flex-col ">
                   <button
                     className={`font-medium text-[16px] ${inters.className} bg-[#DB4444] w-full text-white rounded-[4px] justify-center py-[16px]`}
+                    disabled={isLoading}
                   >
-                    Create Account
+                    {isLoading ? (
+                      <>
+                      
+                        <span className="flex justify-center items-center">
+                          <Loader2 size={24}  className=" h-6 w-6 animate-spin"/>
+                       </span>
+                      </>
+                    ) : (
+                      "Create Account"
+                    )}
                   </button>
-                  
                 </div>
                 <div className="flex justify-center gap-[4px] items-center ">
                   <p
@@ -250,7 +274,6 @@ const SignUp = () => {
               </div>
             </div>
           </div>
-         
         </form>
       </div>
     </div>
@@ -258,4 +281,3 @@ const SignUp = () => {
 };
 
 export default SignUp;
-

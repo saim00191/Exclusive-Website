@@ -2,15 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --scrollbar-track: #f0f0f0;
+  --scrollbar-thumb: red;
 }
+
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #171717;
     --foreground: #ffffff;
+    --scrollbar-track: #1e1e1e;
+    --scrollbar-thumb: #e63946; 
   }
 }
 
@@ -20,20 +26,36 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+
 .container {
-  @apply max-w-[1170px] px-4 m-auto w-full h-full;
+  @apply max-w-[1170px] px-4 mx-auto w-full min-h-screen;
 }
 
-
+/* Scrollbar Customization */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: red; 
-  border-radius: 2px;
+  background-color: var(--scrollbar-thumb);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #f0f0f0;
+  background-color: var(--scrollbar-track);
+}
+
+/* Ensuring Mobile UI is Smooth */
+@media (max-width: 768px) {
+  .container {
+    @apply px-3;
+  }
+
+  body {
+    font-size: 14px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
 }

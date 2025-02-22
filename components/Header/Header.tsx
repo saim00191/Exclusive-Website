@@ -99,7 +99,7 @@ const Header = () => {
                 />
               </svg>
             </div>
-            <div className="flex gap-[16px] items-center">
+            <div className="xs:flex gap-[16px] hidden items-center">
               <Link href="/wishlist">
                 <span className="relative">
                   <svg

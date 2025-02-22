@@ -5,8 +5,9 @@ import { app } from "@/firebase/firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import image from "@/images/Login.png";
-import { Inter } from 'next/font/google';
-import { Poppins } from 'next/font/google';
+import { Loader2 } from "lucide-react";
+import { Inter } from "next/font/google";
+import { Poppins } from "next/font/google";
 import Link from "next/link";
 import { setUserInfo } from "@/redux/slice";
 import { useDispatch } from "react-redux";
@@ -23,6 +24,7 @@ const LogIn = () => {
   const [userErrPassword, setUserErrPassword] = useState<string>("");
   const [successMsg, setSuccessMsg] = useState<string>("");
   const [errMessage, setErrMessage] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const emailValidation = (email: string): boolean => {
     return (
@@ -46,38 +48,43 @@ const LogIn = () => {
   };
 
   const dispatch = useDispatch();
-  const signInUser = (event:React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
 
+
+  const signInUser = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+  
     setErrEmail("");
     setErrPassword("");
     setErrMessage("");
     setSuccessMsg("");
-
-
+    setIsLoading(true);
+  
     if (!email) {
       setErrEmail("Enter your email");
+      setIsLoading(false);
       return;
     }
     if (!emailValidation(email)) {
       setErrEmail("Enter a valid email");
+      setIsLoading(false);
       return;
     }
-
-
+  
     if (!password) {
       setErrPassword("Enter your password");
+      setIsLoading(false);
       return;
     }
     if (password.length < 6) {
       setErrPassword("Passwords must be at least 6 characters.");
+      setIsLoading(false);
       return;
     }
-
+  
     const auth = getAuth(app);
     signInWithEmailAndPassword(auth, email, password)
       .then((value) => {
-        console.log("User signed in successfully!");
+    
         const user = value.user;
         dispatch(
           setUserInfo({
@@ -85,20 +92,20 @@ const LogIn = () => {
             email: user?.email,
             displayName: user?.displayName,
             photoURL: user?.photoURL,
-            password : password
+            password: password,
           })
         );
-
+  
         setSuccessMsg("Logged In Successfully!");
         setTimeout(() => {
+          setIsLoading(false); 
           router.push("/");
-        }, 3000);
+        }, 1500); 
       })
-
       .catch((error) => {
+        setIsLoading(false);
         const errorCode = error.code;
-        console.error("Error signing in with email and password:", error);
-
+  
         if (errorCode === "auth/invalid-email") {
           setErrEmail("Invalid email");
         } else if (errorCode === "auth/wrong-password") {
@@ -108,6 +115,8 @@ const LogIn = () => {
         }
       });
   };
+  
+
 
   return (
     <div className="max-w-[1305px] my-[60px]  w-full h-[781px] 2xl:mx-auto">
@@ -187,16 +196,29 @@ const LogIn = () => {
                     </p>
                   )}
                   {successMsg && (
-                  <div className={`${poppins.className} mt-4 text-center font-bold uppercase p-2 bg-green-100 text-green-700 rounded`}>
-                    {successMsg}
-                  </div>
-                )}
+                    <div
+                      className={`${poppins.className} mt-4 text-center font-bold uppercase p-2 bg-green-100 text-green-700 rounded`}
+                    >
+                      {successMsg}
+                    </div>
+                  )}
                   <div className="gap-[16px] flex items-center justify-between">
                     <button
                       type="submit"
                       className={`font-medium text-[16px] ${inters.className} bg-[#DB4444] w-[143px] text-white rounded-[4px] justify-center py-[16px]`}
                     >
-                      Log In
+                      {isLoading ? (
+                        <>
+                          <span className="flex justify-center items-center">
+                            <Loader2
+                              size={24}
+                              className=" h-6 w-6 animate-spin"
+                            />
+                          </span>
+                        </>
+                      ) : (
+                        "Login"
+                      )}
                     </button>
                     <button
                       type="button"
@@ -218,7 +240,6 @@ const LogIn = () => {
                     </p>
                   </div>
                 </div>
-                
               </form>
             </div>
           </div>
@@ -229,4 +250,3 @@ const LogIn = () => {
 };
 
 export default LogIn;
-

@@ -49,7 +49,6 @@ export default function EditOrderClient({ slug }: { slug: string }) {
           })
           .commit()
 
-        console.log("Order updated successfully:", updatedOrder)
 
         if (data.products.length === 0) {
           router.push("/")
@@ -85,10 +84,8 @@ export default function EditOrderClient({ slug }: { slug: string }) {
     if (data && data._id) {
       try {
         await client.delete(data._id)
-        console.log("Order deleted successfully")
         router.push("/orders")
       } catch (error) {
-        console.error("Error deleting order:", error)
       }
     }
   }

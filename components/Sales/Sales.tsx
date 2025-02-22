@@ -44,7 +44,7 @@ const Sale = () => {
               >
                 Flash Sale
               </h2>
-              <div className="w-[302px] flex justify-between items-center">
+              <div className="w-[302px] hidden  xs:flex justify-between items-center">
                 <TimerItem label="Days" value="03" />
                 <div className="flex flex-col gap-2 mt-5">
                   <span className="h-1 rounded-full w-1 bg-[#E07575]" />

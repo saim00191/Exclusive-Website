@@ -35,9 +35,8 @@ const Home: React.FC = () => {
         )
 
         setData(response)
-        console.log("Data fetched:", response)
       } catch (error) {
-        console.error("Error fetching data:", error)
+        setLoading(false)
       } finally {
         setLoading(false)
       }

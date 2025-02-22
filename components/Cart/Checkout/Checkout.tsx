@@ -48,7 +48,7 @@ const BillingDetails = () => {
     email: "",
     saveInfo: false,
   })
-  const [isLoading, setIsLoading] = useState(false) // Added loading state
+  const [isLoading, setIsLoading] = useState(false) 
 
   const products = useSelector((state: RootState) => state.products.products)
   const userInfo = useSelector((state: RootState) => state.products.userInfo)
@@ -168,7 +168,7 @@ const BillingDetails = () => {
         }),
       )
   
-      // Prepare the order data
+
       const orderData = {
         _type: "order",
         orderId: `ORD-${Date.now()}`,
@@ -191,10 +191,9 @@ const BillingDetails = () => {
   
       try {
         const result = await client.create(orderData)
-        console.log("Order created successfully:", result)
         router.push("/orders/ordersuccess")
       } catch (error) {
-        console.error("Error occurred while creating the order:", error)
+       
       } finally {
         setIsLoading(false)
       }

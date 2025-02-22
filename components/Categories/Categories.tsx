@@ -19,7 +19,7 @@ const Categories = () => {
         </div>
         <div className="flex flex-col sm:flex-row items-center justify-between mt-2 px-4 lgll:px-0">
           <h2
-            className={`${inter.className} font-semibold text-[22px] xsm:text-[28px] sm:text-[36px] leading-[48px] tracking-[4px] text-black`}
+            className={`${inter.className} font-semibold text-[18px] xs:text-[22px] xsm:text-[28px] sm:text-[36px] leading-[48px] tracking-[4px] text-black`}
           >
             Browse By Category
           </h2>
