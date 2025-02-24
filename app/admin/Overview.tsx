@@ -1,168 +1,90 @@
-// 'use client'
+// "use client";
+// import { useEffect, useState } from "react";
 // import { client } from "@/sanity/lib/client";
 // import { Poppins } from "next/font/google";
-// import { useEffect, useState } from "react";
+// import { Loader2 } from "lucide-react";
+// import { FaJediOrder, FaOpencart } from "react-icons/fa";
+// import { FaArrowsRotate } from "react-icons/fa6";
+// import { LuUser } from "react-icons/lu";
+// import { TiMessages } from "react-icons/ti";
+// import { TbCancel } from "react-icons/tb";
 
 // const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 
-
-
 // const Overview = () => {
-    
-//  const [orders, setOrders] = useState([])
+//   const [data, setData] = useState({
+//     userCount: 0,
+//     ordersCount: 0,
+//     reactivateOrderCount: 0,
+//     cancelledOrderCount: 0,
+//     inboxCount: 0,
+//     productsCount: 0,
+//   });
+//   const [isLoading, setIsLoading] = useState(true);
 
-//  useEffect(() => {
-//    // Sanity query to fetch orders of type "order"
-//    const query = `*[type == "order"]`
-   
-//    // Fetch data from Sanity
-//    const fetchOrders = async () => {
-//      try {
-//        const ordersData = await client.fetch(`*[type == "order"]`)
-//          setOrders(ordersData)
-//          console.log(ordersData.length)
-//      } catch (error) {
-//        console.error("Error fetching orders: ", error)
-//      }
-//    }
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       try {
+//         const responses = await Promise.all([
+//           client.fetch(`*[_type == "user"]`),
+//           client.fetch(`*[_type == "order"]`),
+//           client.fetch(`*[_type == "reactivateOrder"]`),
+//           client.fetch(`*[_type == "cancelOrder"]`),
+//           client.fetch(`*[_type == "inbox"]`),
+//           client.fetch(`*[_type == "product"]`),
+//         ]);
 
-//    fetchOrders()
-//  }, []) 
+//         setData({
+//           userCount: responses[0].length,
+//           ordersCount: responses[1].length,
+//           reactivateOrderCount: responses[2].length,
+//           cancelledOrderCount: responses[3].length,
+//           inboxCount: responses[4].length,
+//           productsCount: responses[5].length,
+//         });
+//       } catch (error) {
+//         console.error("Error fetching data:", error);
+//       } finally {
+//         setIsLoading(false);
+//       }
+//     };
+
+//     fetchData();
+//   }, []);
+
+//   if (isLoading) {
+//     return (
+//       <div className="flex items-center justify-center">
+//         <Loader2 size={50} color="#000" />
+//       </div>
+//     );
+//   }
+
 //   return (
-//     <div className="flex items-center justify-between">
-//       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-full">
-//         <div className="w-[283px] h-[164px] border-2 border-[#F0F0F0] bg-white rounded-[10px] ">
-//           <div className="flex items-center h-[164px] w-full px-4 py-2 ">
-//             <div className=" flex items-center justify-start w-full h-full">
-//               <span className="w-[110px] h-[110px] rounded-full bg-green-500"></span>
-//             </div>
-//             <div className="flex flex-col items-center gap-y-4 justify-center w-full h-full">
-//               <h4
-//                 className={`${poppins.className} font-bold text-[16px] text-[#858585]`}
-//               >
-//                 Total Numbers of Users
+//     <div className="flex items-center justify-center">
+//       <div className="grid grid-cols-1 smx:grid-cols-2 gap-8 md:grid-cols-3 lgl:grid-cols-4 justify-items-center">
+//         {[
+//           { icon: FaOpencart, count: data.productsCount, label: "Products" },
+//           { icon: LuUser, count: data.userCount, label: "Users" },
+//           { icon: FaJediOrder, count: data.ordersCount, label: "Orders" },
+//           { icon: TbCancel, count: data.cancelledOrderCount, label: "Cancelled" },
+//           { icon: FaArrowsRotate, count: data.reactivateOrderCount, label: "ReActivated" },
+//           { icon: TiMessages, count: data.inboxCount, label: "Inbox" },
+//         ].map((item, index) => (
+//           <div key={index} className="flex items-center justify-center gap-4 border rounded-[12px] w-[190px] h-[100px]">
+//             <span className="flex items-center justify-center w-[50px] h-[50px] rounded-full">
+//               <item.icon size={30} color="green" />
+//             </span>
+//             <div className="flex flex-col items-center">
+//               <h4 className={`${poppins.className} text-[22px] text-[#464255] font-bold`}>
+//                 {item.count}
 //               </h4>
-//               <div className="flex items-center justify-between gap-x-8">
-//                 <p className={`${poppins.className} text-[#1CD1A1] text-[13px]`}>24</p>
-//                 <svg
-//                   width="63"
-//                   height="26"
-//                   viewBox="0 0 63 26"
-//                   fill="none"
-//                   xmlns="http://www.w3.org/2000/svg"
-//                 >
-//                   <path
-//                     fill-rule="evenodd"
-//                     clip-rule="evenodd"
-//                     d="M0 26V10.3755L5.60289 18.645L11.8586 14.0553L17.1566 8.95548L22.5442 6.43643L27.8222 8.95548L33.8206 14.6354L39.481 8.95548L45.2619 14.0553L50.9223 3.80797C50.9223 3.80797 52.9538 5.69498 53.7891 7.26675C53.9586 7.58562 62.0776 -1.1916 62.7162 0.137052C63.3548 1.4657 62.7162 26 62.7162 26H0Z"
-//                     fill="url(#paint0_linear_1_1240)"
-//                   />
-//                   <defs>
-//                     <linearGradient
-//                       id="paint0_linear_1_1240"
-//                       x1="-25.6449"
-//                       y1="-18.7048"
-//                       x2="-25.6449"
-//                       y2="28.4624"
-//                       gradientUnits="userSpaceOnUse"
-//                     >
-//                       <stop stop-color="#1CD1A1" />
-//                       <stop offset="1" stop-color="white" />
-//                     </linearGradient>
-//                   </defs>
-//                 </svg>
-//               </div>
+//               <p className={`${poppins.className} text-[18px] text-[#464255] whitespace-nowrap`}>
+//                 {item.label}
+//               </p>
 //             </div>
 //           </div>
-//         </div>
-//         <div className="w-[283px] h-[164px] border-2 border-[#F0F0F0] bg-white rounded-[10px] ">
-//           <div className="flex items-center h-[164px] w-full px-4 py-2 ">
-//             <div className=" flex items-center justify-start w-full h-full">
-//               <span className="w-[110px] h-[110px] rounded-full bg-green-500"></span>
-//             </div>
-//             <div className="flex flex-col items-center gap-y-4 justify-center w-full h-full">
-//               <h4
-//                 className={`${poppins.className} font-bold text-[16px] text-[#858585]`}
-//               >
-//                 Total Numbers of Users
-//               </h4>
-//               <div className="flex items-center justify-between gap-x-8">
-//                 <p className={`${poppins.className} text-[#1CD1A1] text-[13px]`}>24</p>
-//                 <svg
-//                   width="63"
-//                   height="26"
-//                   viewBox="0 0 63 26"
-//                   fill="none"
-//                   xmlns="http://www.w3.org/2000/svg"
-//                 >
-//                   <path
-//                     fill-rule="evenodd"
-//                     clip-rule="evenodd"
-//                     d="M0 26V10.3755L5.60289 18.645L11.8586 14.0553L17.1566 8.95548L22.5442 6.43643L27.8222 8.95548L33.8206 14.6354L39.481 8.95548L45.2619 14.0553L50.9223 3.80797C50.9223 3.80797 52.9538 5.69498 53.7891 7.26675C53.9586 7.58562 62.0776 -1.1916 62.7162 0.137052C63.3548 1.4657 62.7162 26 62.7162 26H0Z"
-//                     fill="url(#paint0_linear_1_1240)"
-//                   />
-//                   <defs>
-//                     <linearGradient
-//                       id="paint0_linear_1_1240"
-//                       x1="-25.6449"
-//                       y1="-18.7048"
-//                       x2="-25.6449"
-//                       y2="28.4624"
-//                       gradientUnits="userSpaceOnUse"
-//                     >
-//                       <stop stop-color="#1CD1A1" />
-//                       <stop offset="1" stop-color="white" />
-//                     </linearGradient>
-//                   </defs>
-//                 </svg>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//         <div className="w-[283px] h-[164px] border-2 border-[#F0F0F0] bg-white rounded-[10px] ">
-//           <div className="flex items-center h-[164px] w-full px-4 py-2 ">
-//             <div className=" flex items-center justify-start w-full h-full">
-//               <span className="w-[110px] h-[110px] rounded-full bg-green-500"></span>
-//             </div>
-//             <div className="flex flex-col items-center gap-y-4 justify-center w-full h-full">
-//               <h4
-//                 className={`${poppins.className} font-bold text-[16px] text-[#858585]`}
-//               >
-//                 Total Numbers of Users
-//               </h4>
-//               <div className="flex items-center justify-between gap-x-8">
-//                 <p className={`${poppins.className} text-[#1CD1A1] text-[13px]`}>{orders.length}</p>
-//                 <svg
-//                   width="63"
-//                   height="26"
-//                   viewBox="0 0 63 26"
-//                   fill="none"
-//                   xmlns="http://www.w3.org/2000/svg"
-//                 >
-//                   <path
-//                     fill-rule="evenodd"
-//                     clip-rule="evenodd"
-//                     d="M0 26V10.3755L5.60289 18.645L11.8586 14.0553L17.1566 8.95548L22.5442 6.43643L27.8222 8.95548L33.8206 14.6354L39.481 8.95548L45.2619 14.0553L50.9223 3.80797C50.9223 3.80797 52.9538 5.69498 53.7891 7.26675C53.9586 7.58562 62.0776 -1.1916 62.7162 0.137052C63.3548 1.4657 62.7162 26 62.7162 26H0Z"
-//                     fill="url(#paint0_linear_1_1240)"
-//                   />
-//                   <defs>
-//                     <linearGradient
-//                       id="paint0_linear_1_1240"
-//                       x1="-25.6449"
-//                       y1="-18.7048"
-//                       x2="-25.6449"
-//                       y2="28.4624"
-//                       gradientUnits="userSpaceOnUse"
-//                     >
-//                       <stop stop-color="#1CD1A1" />
-//                       <stop offset="1" stop-color="white" />
-//                     </linearGradient>
-//                   </defs>
-//                 </svg>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
+//         ))}
 //       </div>
 //     </div>
 //   );

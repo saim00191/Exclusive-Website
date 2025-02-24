@@ -58,7 +58,7 @@ export default {
     {
       name: "phone",
       title: "Phone Number",
-      type: "number",
+      type: "string",
       description: "Phone Number",
     },
     {

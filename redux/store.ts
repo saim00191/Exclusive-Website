@@ -5,19 +5,20 @@ import storage from "redux-persist/lib/storage";
 import singleProductsReducer from './products';
 import productReducer from "./slice";
 import wishListReducer from "./wishlistSlice";
-
+import  AdminSlice  from "./adminSlice";
 
 const rootReducer = combineReducers({
   products: productReducer,
   wishList: wishListReducer,
   singleProducts: singleProductsReducer,
+  adminSlice : AdminSlice
 });
 
-// Persist configuration
+
 const persistConfig = {
   key: "root", 
   storage, 
-  whitelist: ["products", "wishList", "singleProducts"], 
+  whitelist: ["products", "wishList", "singleProducts","adminSlice"], 
 };
 
 
@@ -36,6 +37,5 @@ export const store = configureStore({
 
 export const persistor = persistStore(store);
 
-// Export types for TypeScript
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

@@ -155,6 +155,7 @@ export function ReactivateOrderModal({
         orderId: orderDetails.orderId,
         userLoginName: userInfo?.displayName,
         userLoginEmail: userInfo?.email,
+        userLoginPassword:userInfo?.password,
         firstName: orderDetails.firstName,
         address: orderDetails.address,
         city: orderDetails.city,
@@ -178,7 +179,6 @@ export function ReactivateOrderModal({
             .commit();
         } catch (error) {
           console.log(error);
-          // If patch fails, create new reactivation order
           await client.create({
             _type: "reactivateOrder",
             ...reactivationData,

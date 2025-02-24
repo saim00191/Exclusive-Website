@@ -39,6 +39,24 @@ export const Products = {
         description: 'Description of the product (optional)',
       },
       {
+        name: 'buyingPrice',
+        title: 'Buying Price',
+        type: 'number',
+        description: 'Buying price of the product (optional)',
+      },
+      {
+        name: 'profitPrice',
+        title: 'Profit Price',
+        type: 'number',
+        description: 'Profit Price',
+      },
+      {
+        name: 'profitPercentage',
+        title: 'Profit Percentage',
+        type: 'number',
+        description: 'Profit Percentage',
+      },
+      {
         name: 'price',
         title: 'Price',
         type: 'number',

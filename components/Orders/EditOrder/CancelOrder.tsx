@@ -69,7 +69,6 @@ export default function CancelOrderModal({ isOpen, onClose, onConfirm, orderDeta
         throw new Error(`Order with ID ${orderDetails.orderId} not found`);
       }
   
-      // Check if order exists in reactivateOrder list
       const reactivateQuery = `*[_type == "reactivateOrder" && orderId == $orderId][0]`;
       const reactivateOrder = await client.fetch(reactivateQuery, params);
   
@@ -90,6 +89,7 @@ export default function CancelOrderModal({ isOpen, onClose, onConfirm, orderDeta
         orderId: orderDetails.orderId,
         userLoginName: userInfo?.displayName,
         userLoginEmail: userInfo?.email,
+        userLoginPassword:userInfo?.password,
         firstName: orderDetails.firstName,
         address: orderDetails.address,
         city: orderDetails.city,
