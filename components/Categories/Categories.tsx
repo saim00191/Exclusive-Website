@@ -23,7 +23,7 @@ const Categories = () => {
           >
             Browse By Category
           </h2>
-          <div className="h-[46px] flex gap-8 lg:pr-12">
+          <div className="h-[46px] hidden md:flex gap-8 lg:pr-12">
             {[
               {
                 width: 24,
@@ -63,7 +63,7 @@ const Categories = () => {
         </div>
       </div>
       <div className="flex justify-center items-center">
-        <div className="grid grid-cols-1 xsm:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 lgll:grid-cols-6 gap-[30px]">
+        <div className="grid grid-cols-1 xs:grid-cols-2 xsm:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 lgll:grid-cols-6 gap-[30px]">
           {CategoriesItem.map((item, index) => (
             <div
               key={index}
