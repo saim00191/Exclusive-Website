@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -10,20 +9,21 @@
   --scrollbar-thumb: red;
 }
 
-
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #171717;
     --foreground: #ffffff;
     --scrollbar-track: #1e1e1e;
-    --scrollbar-thumb: #e63946; 
+    --scrollbar-thumb: #e63946;
   }
 }
+
 
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 
@@ -31,7 +31,7 @@ body {
   @apply max-w-[1170px] px-4 mx-auto w-full min-h-screen;
 }
 
-/* Scrollbar Customization */
+
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -45,7 +45,7 @@ body {
   background-color: var(--scrollbar-track);
 }
 
-/* Ensuring Mobile UI is Smooth */
+
 @media (max-width: 768px) {
   .container {
     @apply px-3;
@@ -59,4 +59,3 @@ body {
     width: 4px;
   }
 }
-
