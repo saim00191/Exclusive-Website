@@ -1,38 +1,31 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
 
-
-interface AdminInfo {
-
-  name: string | null
-  password: string | number | boolean;
+export interface AdminInfo {
+  name: string
+  password: string 
 }
 
-interface InitialState {
-  adminInfo: AdminInfo | null;
+interface AdminState {
+  adminInfo: AdminInfo | null
 }
 
-const initialState: InitialState = {
-    adminInfo: null,
-};
+const initialState: AdminState = {
+  adminInfo: null,
+}
 
-export const AdminSlice = createSlice({
-  name: "adminSlice",
+const adminSlice = createSlice({
+  name: "admin",
   initialState,
   reducers: {
-    
-
     setAdminInfo: (state, action: PayloadAction<AdminInfo>) => {
-      state.adminInfo = action.payload;
+      state.adminInfo = action.payload
     },
-    signOut: (state) => {
-      state.adminInfo = null;
-      
+    clearAdminInfo: (state) => {
+      state.adminInfo = null
     },
   },
-});
+})
 
-export const {
-  setAdminInfo,
-  signOut,
-} = AdminSlice.actions;
-export default AdminSlice.reducer;
+export const { setAdminInfo, clearAdminInfo } = adminSlice.actions
+export default adminSlice.reducer
+

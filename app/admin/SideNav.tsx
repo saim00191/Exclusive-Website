@@ -10,19 +10,22 @@ import Link from "next/link";
 import { TbCancel } from "react-icons/tb";
 import { TiMessages } from "react-icons/ti";
 import { IoMdLogOut } from "react-icons/io";
-import { useDispatch } from "react-redux";
-import { signOut } from "@/redux/adminSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { clearAdminInfo } from "@/redux/adminSlice";
 import { useRouter } from "next/navigation";
-
+import { RootState } from "@/redux/store";
+import { IoMdLogIn } from "react-icons/io";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 
 const SideNav = () => {
+
+  const adminInfo = useSelector((state: RootState) => state.adminSlice.adminInfo);
   const router = useRouter();
   const dispatch = useDispatch();
 
   const handleLogout = () => {
-    dispatch(signOut());
+    dispatch(clearAdminInfo());
     router.push('/adminLogin')
   };
 
@@ -53,7 +56,7 @@ const SideNav = () => {
             </p>
           </Link>
         ))}
-        <button
+        {adminInfo !== null ? <button
           onClick={handleLogout}
           className="flex items-center gap-4 text-[#858585] hover:text-white group px-4 hover:bg-carminePink w-[50px] xsm:w-[80px] sm:w-[180px] lg:w-[250px] h-[50px] rounded-[10px] cursor-pointer"
         >
@@ -61,7 +64,16 @@ const SideNav = () => {
           <p className={`${poppins.className} text-[16px] font-medium hidden sm:block`}>
             Signout
           </p>
-        </button>
+        </button> : <Link href='/adminLogin'
+  
+          className="flex items-center gap-4 text-[#858585] hover:text-white group px-4 hover:bg-carminePink w-[50px] xsm:w-[80px] sm:w-[180px] lg:w-[250px] h-[50px] rounded-[10px] cursor-pointer"
+        >
+          <IoMdLogIn className="text-carminePink group-hover:text-white text-xl" />
+          <p className={`${poppins.className} text-[16px] font-medium hidden sm:block`}>
+            Login
+          </p>
+        </Link>}
+        
       </div>
     </Wrapper>
   );

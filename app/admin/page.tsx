@@ -10,6 +10,7 @@ import { LuUser } from "react-icons/lu";
 import { TiMessages } from "react-icons/ti";
 import { TbCancel } from "react-icons/tb";
 import LoadingSpinner from "@/shared/LoadingSpinner";
+import NotLoggedIn from "@/shared/NotLoggedIn";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 
@@ -60,9 +61,7 @@ const Overview = () => {
 
   if (!adminInfo || !adminInfo.name) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <h2 className={`${poppins.className} text-2xl font-bold text-red-600`}>Not Logged In</h2>
-      </div>
+      <NotLoggedIn/>
     );
   }
 

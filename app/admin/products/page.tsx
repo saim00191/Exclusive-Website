@@ -1,13 +1,16 @@
 "use client";
 
+import { RootState } from "@/redux/store";
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
+import NotLoggedIn from "@/shared/NotLoggedIn";
 import { Poppins } from "next/font/google";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { BiCommentDetail } from "react-icons/bi";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { useSelector } from "react-redux";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 
@@ -37,10 +40,12 @@ const ProductList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const adminInfo = useSelector((state: RootState) => state.adminSlice.adminInfo);
   const [modalType, setModalType] = useState<
     "delete" | "detail" | "edit" | null
   >(null);
   const productsPerPage = 10;
+  console.log(isLoading);
 
   useEffect(() => {
     fetchProducts();
@@ -72,6 +77,13 @@ const ProductList = () => {
       setIsLoading(false);
     }
   };
+
+  if (!adminInfo || !adminInfo.name) {
+    return (
+     <NotLoggedIn/>
+    );
+  }
+
 
   const filteredProducts = productsData.filter((product) =>
     product.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -167,7 +179,8 @@ const ProductList = () => {
                 <strong>Profit Price:</strong> {selectedProduct.profitPrice}
               </p>
               <p>
-                <strong>Profit Percentage:</strong> {selectedProduct.profitPercentage}
+                <strong>Profit Percentage:</strong>{" "}
+                {selectedProduct.profitPercentage}
               </p>
               <p>
                 <strong>Price:</strong> {selectedProduct.price}

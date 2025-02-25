@@ -1,8 +1,11 @@
 "use client";
+import { RootState } from "@/redux/store";
 import { client } from "@/sanity/lib/client";
 import LoadingSpinner from "@/shared/LoadingSpinner";
+import NotLoggedIn from "@/shared/NotLoggedIn";
 import { Inter, Poppins } from "next/font/google";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 type User = {
   _id: string;
@@ -23,7 +26,7 @@ const formatDateTime = (dateTime: string) => {
 export default function UserTable() {
   const [userData, setUserData] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const adminInfo = useSelector((state: RootState) => state.adminSlice.adminInfo);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -38,6 +41,14 @@ export default function UserTable() {
 
     fetchUsers();
   }, []);
+
+
+  if (!adminInfo || !adminInfo.name) {
+    return (
+      <NotLoggedIn/>
+    );
+  }
+
 
   if (isLoading) {
     return (

@@ -7,6 +7,9 @@ import { client } from "@/sanity/lib/client";
 import LoadingSpinner from "@/shared/LoadingSpinner";
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
+import NotLoggedIn from "@/shared/NotLoggedIn";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 
@@ -41,7 +44,7 @@ export default function CancelleedOrderPage() {
   const [orderData, setOrderData] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-
+  const adminInfo = useSelector((state: RootState) => state.adminSlice.adminInfo);
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -94,6 +97,12 @@ export default function CancelleedOrderPage() {
       document.body.style.overflow = "unset";
     };
   }, [selectedOrder]);
+
+  if (!adminInfo || !adminInfo.name) {
+    return (
+    <NotLoggedIn/>
+    );
+  }
 
   if (isLoading) {
     return (

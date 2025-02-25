@@ -1,23 +1,19 @@
 "use client";
 
 import type React from "react";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { Lock, Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Poppins } from "next/font/google";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setAdminInfo } from "@/redux/adminSlice";
-import { setCookie } from "cookies-next"; 
 import Wrapper from "@/shared/Wrapper";
-import { RootState } from "@/redux/store";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 
 export default function LoginForm() {
   const dispatch = useDispatch();
   const router = useRouter();
-  const adminInfo = useSelector((state: RootState) => state.adminSlice.adminInfo);
-  
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -26,19 +22,11 @@ export default function LoginForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (name === "admin" && password === "12345678") {
-      const adminData = { name: "admin", password: "12345678" };
+    if (name === process.env.NEXT_PUBLIC_ADMIN_NAME && password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD) {
+      const adminData = { name: name , password: password };
 
       dispatch(setAdminInfo(adminData));
-
-
-      setCookie("adminInfo", JSON.stringify(adminData), {
-        maxAge: 60 * 60 * 24, 
-        path: "/", 
-      });
-
       setSuccessMsg("Logged In Successfully");
-    
         router.push("/admin");
 
     } else {
@@ -46,12 +34,6 @@ export default function LoginForm() {
     }
   };
 
-
-  useEffect(() => {
-    if (adminInfo) {
-      console.log("Admin Info:", adminInfo);
-    }
-  }, [adminInfo]);
 
   return (
     <Wrapper className="flex items-center justify-center w-full h-auto py-10 px-4">
