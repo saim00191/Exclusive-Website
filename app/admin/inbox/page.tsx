@@ -5,8 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Poppins } from "next/font/google";
 import { client } from "@/sanity/lib/client";
 import LoadingSpinner from "@/shared/LoadingSpinner";
-import Image from "next/image";
-import { urlFor } from "@/sanity/lib/image";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import NotLoggedIn from "@/shared/NotLoggedIn";
