@@ -80,6 +80,7 @@ const ForgotPassword = () => {
     } catch (error) {
       setErrFirebase("Failed to send reset email. Please try again.");
       setIsLoading(false);
+      console.log(error)
     }
   };
 

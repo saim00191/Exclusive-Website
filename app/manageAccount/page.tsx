@@ -1,5 +1,5 @@
-import FirstPart from "@/components/ManageAccount/FirstPart";
-import SecondPart from "@/components/ManageAccount/SecondPart";
+// import FirstPart from "@/components/ManageAccount/FirstPart";
+// import SecondPart from "@/components/ManageAccount/SecondPart";
 import Wrapper from "@/shared/Wrapper";
 import { Poppins } from "next/font/google";
 import React from "react";
@@ -11,8 +11,9 @@ const Home = () => {
     <Wrapper
       className={`${poppins.className} flex justify-between h-auto py-14 `}
     >
-      <FirstPart/>
-      <SecondPart/>
+      {/* <FirstPart/>
+      <SecondPart/> */}
+      Home
     </Wrapper>
   );
 };
