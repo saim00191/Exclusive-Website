@@ -220,12 +220,12 @@ const LogIn = () => {
                         "Login"
                       )}
                     </button>
-                    <button
+                    <Link href='/forgetPassword'
                       type="button"
-                      className={`font-normal text-[16px] ${inters.className} text-[#DB4444]`}
+                      className={`font-normal hover:underline text-[16px] ${inters.className} text-[#DB4444]`}
                     >
                       Forget Password?
-                    </button>
+                    </Link>
                   </div>
                   <div className="flex justify-center gap-[4px] items-center">
                     <p
