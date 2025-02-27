@@ -57,6 +57,7 @@ export function ReactivateOrderModal({
   const userInfo = useSelector((state: RootState) => state.products.userInfo);
   const [isReactivating, setIsReactivating] = useState(false);
   const router = useRouter();
+  console.log(onConfirm)
   const sendReactivateOrderToSanity = async () => {
     setIsReactivating(true);
   
