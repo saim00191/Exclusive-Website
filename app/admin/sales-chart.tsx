@@ -16,8 +16,21 @@ import {
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 
+interface SalesData {
+  month: string;
+  fullDate: string;
+  sales: number;
+  timestamp: number;
+}
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+interface TooltipProps {
+  active?: boolean;
+  payload?: { value: number; payload: SalesData }[];
+  label?: string;
+}
+
+
+const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-white p-4 border border-gray-200 rounded-lg shadow-md">
