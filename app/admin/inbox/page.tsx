@@ -46,7 +46,6 @@ export default function InboxPage() {
           }`
         );
         setInbox(Inbox);
-        console.log("Orders", Inbox);
       } catch (error) {
         console.error("Error fetching Inbox:", error);
       } finally {

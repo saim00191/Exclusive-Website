@@ -56,7 +56,7 @@ export default function SalesChart() {
     const fetchOrders = async () => {
       try {
         const orders = await client.fetch(`*[_type == "order"]`);
-        console.log("Total Orders:", orders.length);
+    
         setOrderCount(orders.length);
 
         const formattedData = orders
@@ -73,7 +73,7 @@ export default function SalesChart() {
           })
           .sort((a: { timestamp: number; }, b: { timestamp: number; }) => a.timestamp - b.timestamp); // Sort by timestamp
 
-        console.log("Formatted & Sorted Data:", formattedData);
+    
         setSalesData(formattedData);
       } catch (error) {
         console.error("Error fetching orders:", error);

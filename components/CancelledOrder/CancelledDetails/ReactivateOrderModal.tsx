@@ -57,16 +57,14 @@ export function ReactivateOrderModal({
   const userInfo = useSelector((state: RootState) => state.products.userInfo);
   const [isReactivating, setIsReactivating] = useState(false);
   const router = useRouter();
-  const [countdown, setCountdown] = useState(2);
-  console.log(countdown);
   const sendReactivateOrderToSanity = async () => {
     setIsReactivating(true);
-
+  
     try {
       const reactivatedOrderQuery = `*[_type == "reactivateOrder" && orderId == $orderId][0]`;
       const reactivatedOrderParams = { orderId: orderDetails.orderId };
       let existingReactivatedOrder;
-
+  
       try {
         existingReactivatedOrder = await client.fetch(
           reactivatedOrderQuery,
@@ -75,11 +73,11 @@ export function ReactivateOrderModal({
       } catch (error) {
         console.error(error);
       }
-
+  
       const cancelOrderQuery = `*[_type == "cancelOrder" && orderId == $orderId][0]`;
       const cancelOrderParams = { orderId: orderDetails.orderId };
       let cancelledOrder;
-
+  
       try {
         cancelledOrder = await client.fetch(
           cancelOrderQuery,
@@ -88,23 +86,23 @@ export function ReactivateOrderModal({
       } catch (error) {
         console.error(error);
       }
-
+  
       if (!cancelledOrder) {
         console.warn(
           `Cancelled order with ID ${orderDetails.orderId} not found. Proceeding with reactivation.`
         );
       }
-
+  
       const orderQuery = `*[_type == "order" && orderId == $orderId][0]`;
       const orderParams = { orderId: orderDetails.orderId };
       let existingOrder;
-
+  
       try {
         existingOrder = await client.fetch(orderQuery, orderParams);
       } catch (error) {
         console.error(error);
       }
-
+  
       if (!existingOrder) {
         try {
           await client.create({
@@ -150,12 +148,12 @@ export function ReactivateOrderModal({
           });
         }
       }
-
+  
       const reactivationData = {
         orderId: orderDetails.orderId,
         userLoginName: userInfo?.displayName,
         userLoginEmail: userInfo?.email,
-        userLoginPassword:userInfo?.password,
+        userLoginPassword: userInfo?.password,
         firstName: orderDetails.firstName,
         address: orderDetails.address,
         city: orderDetails.city,
@@ -170,7 +168,7 @@ export function ReactivateOrderModal({
         previousStatus: cancelledOrder?.orderStatus || "unknown",
         previousPaymentStatus: cancelledOrder?.paymentStatus || "unknown",
       };
-
+  
       if (existingReactivatedOrder) {
         try {
           await client
@@ -194,7 +192,7 @@ export function ReactivateOrderModal({
           throw error;
         }
       }
-
+  
       if (cancelledOrder?._id) {
         try {
           await client.delete(cancelledOrder._id);
@@ -202,20 +200,9 @@ export function ReactivateOrderModal({
           console.error(error);
         }
       }
-
-      const timer = setInterval(() => {
-        setCountdown((prevCount) => {
-          if (prevCount === 1) {
-            clearInterval(timer);
-            router.push("/");
-          }
-          return prevCount - 1;
-        });
-      }, 1000);
-
-      onConfirm();
-      onClose();
+  
       toast.success("Order reactivated successfully.");
+      router.push("/orders"); // Redirect to orders page after reactivation
     } catch (error) {
       console.error("Error reactivating order:", error);
       toast.error("Failed to reactivate order. Please try again.");
@@ -223,6 +210,7 @@ export function ReactivateOrderModal({
       setIsReactivating(false);
     }
   };
+  
 
   return (
     <Dialog open={isOpen} onClose={onClose} className="relative z-50">

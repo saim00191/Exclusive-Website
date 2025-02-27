@@ -75,7 +75,6 @@ export default function OrdersPage() {
           }`
         );
         setOrderData(Orders);
-        console.log("Orders", Orders);
       } catch (error) {
         console.error("Error fetching Orders:", error);
       } finally {

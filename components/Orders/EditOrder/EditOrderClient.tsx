@@ -11,6 +11,7 @@ import type { OrderData } from "@/components/Orders/OrderDetails/types"
 import LoadingSpinner from "@/shared/LoadingSpinner"
 import { Poppins } from "next/font/google"
 import CancelOrderModal from "@/components/Orders/EditOrder/CancelOrder"
+import toast from "react-hot-toast"
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] })
 
@@ -48,7 +49,7 @@ export default function EditOrderClient({ slug }: { slug: string }) {
             phone: data.phone,
           })
           .commit()
-
+          toast.success("Changes Saved Successfully.");
   
         if (data.products.length === 0) {
           router.push("/")
@@ -84,7 +85,7 @@ export default function EditOrderClient({ slug }: { slug: string }) {
     if (data && data._id) {
       try {
         await client.delete(data._id)
-        router.push("/orders")
+        router.push("/cancellations")
       } catch (error) {
         console.log(error)
       }
@@ -109,7 +110,7 @@ export default function EditOrderClient({ slug }: { slug: string }) {
 
         <OrderDetails data={data} onEditField={handleEditField} />
 
-        <div className="flex justify-center smx:justify-end mt-6 items-center gap-3">
+        <div className="flex flex-col xsm:flex-row justify-center smx:justify-end mt-6 items-center gap-3">
           <div className="flex justify-center smx:justify-end  items-center">
             <button
               onClick={handleCancelOrder}
