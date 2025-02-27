@@ -21,6 +21,7 @@ interface SalesData {
   fullDate: string;
   sales: number;
   timestamp: number;
+  
 }
 
 interface TooltipProps {
