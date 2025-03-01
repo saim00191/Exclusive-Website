@@ -610,12 +610,16 @@
 
 // export default ProductList
 
+
+import ProductList from '@/components/Admin/Products/Product-List'
 import React from 'react'
 
-const ProductList = () => {
+const Home = () => {
   return (
-    <div>ProductList Page</div>
+    <div>
+      <ProductList/>
+    </div>
   )
 }
 
-export default ProductList
+export default Home

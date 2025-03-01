@@ -63,44 +63,7 @@ const Sale = () => {
                 <TimerItem label="Seconds" value="56" />
               </div>
             </div>
-            <div className="h-[46px] mb-12 mt-4 lgll:mt-0 lgll:mb-0 flex gap-8 lg:pr-12 ">
-             
-              {[
-                {
-                  width: 24,
-                  height: 24,
-                  path: "M11 5L4 12L11 19M4 12H20",
-                  strokeWidth: 2,
-                },
-                {
-                  width: 19,
-                  height: 16,
-                  path: "M1.5 8H18M18 8L11 1M18 8L11 15",
-                  strokeWidth: 1.5,
-                },
-              ].map((icon, i) => (
-                <div
-                  key={i}
-                  className="h-[46px] w-[46px] cursor-pointer hover:bg-carminePink bg-[#F5F5f5] rounded-full flex items-center justify-center"
-                >
-                  <svg
-                    width={icon.width}
-                    height={icon.height}
-                    viewBox={`0 0 ${icon.width} ${icon.height}`}
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d={icon.path}
-                      stroke="black"
-                      strokeWidth={icon.strokeWidth}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
-              ))}
-            </div>
+            
           </div>
         </div>
       </Wrapper>
