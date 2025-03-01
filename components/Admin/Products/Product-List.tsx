@@ -3,7 +3,6 @@
 import type { RootState } from "@/redux/store"
 import { client } from "@/sanity/lib/client"
 import NotLoggedIn from "@/shared/NotLoggedIn"
-import { Poppins } from "next/font/google"
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import ProductSearch from "./Product-Search"
