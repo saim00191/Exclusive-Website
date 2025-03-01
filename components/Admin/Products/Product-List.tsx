@@ -12,8 +12,6 @@ import Pagination from "./Pagination"
 import ProductModal from "./Product-Modal"
 import AddProductButton from "./Add-Product-Button"
 
-const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] })
-
 export interface Product {
   _id: string
   tag: string
@@ -36,7 +34,6 @@ export interface Product {
 
 const ProductList = () => {
   const [productsData, setProductsData] = useState<Product[]>([])
-  const [isLoading, setIsLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
@@ -70,9 +67,7 @@ const ProductList = () => {
       setProductsData(products)
     } catch (error) {
       console.error("Error fetching products:", error)
-    } finally {
-      setIsLoading(false)
-    }
+    } 
   }
 
   const getEmptyProduct = (): Omit<Product, "_id"> => {
