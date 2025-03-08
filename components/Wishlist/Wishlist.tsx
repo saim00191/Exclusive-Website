@@ -84,8 +84,8 @@ const Wishlist = () => {
                         dispatch(
                           addToCart({
                             id: item.id,
-                            title: item.title,
-                            price: item.price,
+                            title: item.title || '',
+                            price: item.price ?? 0,
                             img: item.img,
                             quantity: 1,
                           })
