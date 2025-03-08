@@ -167,7 +167,7 @@ const SingleProducts = () => {
                         addToCart({
                           id: item.id,
                           title: item.title,
-                          price: item.newPrice,
+                          price: item.newPrice ?? 0,
                           img: item.image,
                           quantity: 1,
                         })
