@@ -23,7 +23,6 @@ const initialState: InitialState = {
   userInfo: [],
 };
 
-// Create slice
 export const WishListWishList = createSlice({
   name: "WishList",
   initialState,

@@ -4,8 +4,8 @@ import { StaticImageData } from "next/image";
 interface Product {
   id: string;
   img: string | StaticImageData;
-  title?: string;
-  price?: number;
+  title: string;
+  price: number;
   discount?: number;
   quantity: number;
 }

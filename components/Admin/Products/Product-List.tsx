@@ -10,26 +10,7 @@ import ProductTable from "./Product-Table"
 import Pagination from "./Pagination"
 import ProductModal from "./Product-Modal"
 import AddProductButton from "./Add-Product-Button"
-
-export interface Product {
-  _id: string
-  tag: string
-  image: {
-    asset: {
-      _ref: string
-    }
-  }
-  discountPercentage: string
-  title: string
-  description: string
-  buyingPrice: string
-  profitPercentage: string
-  profitPrice: string
-  price: string
-  stars: string
-  previousPrice: string
-  reviews: string
-}
+import {Product} from './types'
 
 const ProductList = () => {
   const [productsData, setProductsData] = useState<Product[]>([])

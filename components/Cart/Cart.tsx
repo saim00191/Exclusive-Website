@@ -147,7 +147,7 @@ const Cart = () => {
               </button>
             </div>
 
-            <div className="h-auto sm:h-[324px] flex flex-col sm:flex-row  justify-center md:justify-end lgl:justify-between gap-8 lg:gap-0 px-4">
+            <div className="h-auto sm:h-[324px] flex flex-col smx:flex-row  justify-center md:justify-end lgl:justify-between gap-8 lg:gap-0 px-4">
               <div className="hidden lgl:flex  flex-col sm:flex-row justify-between h-auto sm:h-[56px] w-full sm:w-[537px] gap-4 sm:gap-0">
                 <div className="w-full sm:w-[300px] hidden lg:flex items-center justify-center rounded-[4px] border border-black ">
                   <input
@@ -162,8 +162,8 @@ const Cart = () => {
                   Apply Coupon
                 </button>
               </div>
-              <div className="h-full rounded-[4px] border-black border-[1.5px] w-full sm:w-[470px] flex items-center justify-center p-4 sm:p-0">
-                <div className="lg:w-[424px] ">
+              <div className="h-full rounded-[4px] border-black border-[1.5px] w-full smx:w-[470px] flex items-center justify-center p-4 sm:p-0">
+                <div className="lg:w-[424px] w-full p-4 lg:p-0">
                   <h2
                     className={`${poppins.className} font-medium text-[20px] leading-[28px] text-black`}
                   >
@@ -211,7 +211,7 @@ const Cart = () => {
                     {userInfo !== null ? (
                       <Link href="/cart/checkout">
                         <button
-                          className={`${poppins.className} w-full sm:w-[265px] h-[56px] rounded-[4px] py-4 px-12 bg-carminePink text-[16px] leading-[24px] font-medium cursor-pointer text-primary`}
+                          className={`${poppins.className} w-full sm:w-[265px] h-[56px] rounded-[4px] py-4 px-12 bg-carminePink text-[14px]  xs:text-[16px] leading-[24px] font-medium cursor-pointer text-primary`}
                         >
                           Proceed to Checkout
                         </button>

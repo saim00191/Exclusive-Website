@@ -1,19 +1,26 @@
-import { Poppins } from "next/font/google"
-import { OrderData } from "./types"
-import Link from "next/link"
+import { Poppins } from "next/font/google";
+import { OrderData } from "./types";
+import Link from "next/link";
 
-const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] })
+const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 
 interface OrderSummaryProps {
-  data: OrderData
+  data: OrderData;
 }
 
 export default function OrderSummary({ data }: OrderSummaryProps) {
+  const orderDate = new Date(data.orderDate);
+  const currentDate = new Date();
+  const timeDifference = currentDate.getTime() - orderDate.getTime();
+  const daysDifference = timeDifference / (1000 * 3600 * 24);
+
   return (
     <div className="h-auto flex mt-8 justify-end">
       <div className="h-full rounded-[4px] border-black border-[1.5px] px-4 w-full sm:w-[470px] flex items-center justify-center">
         <div className="lg:w-[424px] w-full h-full py-8">
-          <h2 className={`${poppins.className} font-medium text-[20px] leading-[28px] text-black`}>Order Summary</h2>
+          <h2 className={`${poppins.className} font-medium text-[20px] leading-[28px] text-black`}>
+            Order Summary
+          </h2>
           {[
             { label: "Email", value: data.email },
             { label: "Address", value: data.address },
@@ -38,17 +45,23 @@ export default function OrderSummary({ data }: OrderSummaryProps) {
               {index < 7 && <div className="border-b border-[0.5px] border-black opacity-30" />}
             </div>
           ))}
-          
+
           <div className="flex justify-center items-center mt-6">
-            <Link
-              href={`/orders/editOrder/${data.orderId}`}
-              className="w-[200px] h-[56px] py-4 flex items-center justify-center rounded-[4px] border border-carminePink text-black hover:text-white hover:bg-carminePink"
-            >
-              <p className={`${poppins.className} text-[16px]`}>Edit Details</p>
-            </Link>
+            {daysDifference <= 3 ? (
+              <Link
+                href={`/orders/editOrder/${data.orderId}`}
+                className="w-[200px] h-[56px] py-4 flex items-center justify-center rounded-[4px] border border-carminePink text-black hover:text-white hover:bg-carminePink"
+              >
+                <p className={`${poppins.className} text-[16px]`}>Edit Details</p>
+              </Link>
+            ) : (
+              <p className={`${poppins.className} text-[17px] font-semibold text-green-700 uppercase  text-center`}>
+               Your order has been successfully dispatched and is on its way to you. 
+              </p>
+            )}
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

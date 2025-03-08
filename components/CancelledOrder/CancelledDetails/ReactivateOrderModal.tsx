@@ -112,6 +112,8 @@ export function ReactivateOrderModal({
             userLoginName:
               userInfo?.displayName || cancelledOrder?.userLoginName,
             userLoginEmail: userInfo?.email || cancelledOrder?.userLoginEmail,
+            userLoginPassword:
+              userInfo?.password || cancelledOrder?.userLoginPassword,
             firstName: orderDetails.firstName,
             address: orderDetails.address,
             city: orderDetails.city,
@@ -121,7 +123,7 @@ export function ReactivateOrderModal({
             totalAmount: orderDetails.totalAmount,
             orderStatus: "pending",
             paymentStatus: "pending",
-            orderDate: orderDetails.orderDate,
+            orderDate: new Date().toISOString(),
             reactivatedAt: new Date().toISOString(),
           });
         } catch (error) {
@@ -164,7 +166,7 @@ export function ReactivateOrderModal({
         totalAmount: orderDetails.totalAmount,
         orderStatus: "pending",
         paymentStatus: "pending",
-        orderDate: orderDetails.orderDate,
+        orderDate: new Date().toISOString(),
         reactivatedAt: new Date().toISOString(),
         previousStatus: cancelledOrder?.orderStatus || "unknown",
         previousPaymentStatus: cancelledOrder?.paymentStatus || "unknown",
@@ -203,7 +205,7 @@ export function ReactivateOrderModal({
       }
   
       toast.success("Order reactivated successfully.");
-      router.push("/orders"); // Redirect to orders page after reactivation
+      router.push("/orders"); 
     } catch (error) {
       console.error("Error reactivating order:", error);
       toast.error("Failed to reactivate order. Please try again.");
