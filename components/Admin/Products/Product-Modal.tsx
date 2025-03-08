@@ -3,7 +3,7 @@
 import { urlFor } from "@/sanity/lib/image"
 import { client } from "@/sanity/lib/client"
 import Image from "next/image"
-import type { Product } from "./Product-List"
+import  { Product } from "./types"
 import { useCallback, useState, useRef } from "react"
 import { ImagePlus, X } from "lucide-react"
 
