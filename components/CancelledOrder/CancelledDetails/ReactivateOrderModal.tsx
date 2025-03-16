@@ -9,7 +9,7 @@ import { toast } from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
-import { _isCustomDocumentTypeDefinition } from "sanity";
+
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 
@@ -59,7 +59,7 @@ export function ReactivateOrderModal({
   const userInfo = useSelector((state: RootState) => state.products.userInfo);
   const [isReactivating, setIsReactivating] = useState(false);
   const router = useRouter();
-
+console.log(onConfirm)
 
 const sendReactivateOrderToSanity = async () => {
   setIsReactivating(true);
