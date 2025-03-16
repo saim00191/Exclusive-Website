@@ -37,7 +37,13 @@ const Home: React.FC = () => {
 
         const ordersWithProducts = response.filter((order: Order) => order.products && order.products.length > 0)
 
-        setData(ordersWithProducts)
+
+        const sortedOrders = ordersWithProducts.sort(
+          (a: Order, b: Order) =>
+            new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime()
+        );
+
+        setData(sortedOrders)
 
       } catch (error) {
         console.error(error)

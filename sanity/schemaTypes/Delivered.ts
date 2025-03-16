@@ -169,7 +169,7 @@ export default {
       validation: (Rule: Rule) => Rule.required(),
     },
     {
-      name: "DeliveryDate",
+      name: "deliveryDate",
       title: "Delivery Date",
       type: "datetime",
       description: "The date and time when the order was shipped",

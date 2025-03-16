@@ -11,7 +11,7 @@ const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 
 const Footer = () => {
   return (
-    <div className="bg-black h-auto xl:h-[460px] relative">
+    <div className="bg-black h-auto xl:h-[460px] relative ">
       <Wrapper className="grid grid-cols-1 sm:grid-cols-2 mdl:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-14 lg:gap-[87px] py-8 h-auto xl:h-[236px] px-3 xl:px-0">
         <div className="h-[188px] w-[217px] gap-4 flex flex-col">
           <div className="gap-6 flex h-[124px] flex-col ">
@@ -90,7 +90,7 @@ const Footer = () => {
             <p
               className={`${poppins.className} hover:underline cursor-pointer  font-normal text-[16px] leading-[24px] text-primary`}
             >
-              My Account
+              My Orders
             </p>
             <p
               className={`${poppins.className} hover:underline cursor-pointer  font-normal text-[15px] leading-[24px] text-primary`}

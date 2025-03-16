@@ -5,14 +5,15 @@ import service3 from "@/images/ServiceImg3.png";
 import Image from "next/image";
 import { Poppins } from "next/font/google";
 import { Inter } from "next/font/google";
+import Wrapper from "@/shared/Wrapper";
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 const Inters = Inter({ subsets: ["latin"], weight: ["400", "700"] });
 const Services = () => {
   return (
-    <div className="container  justify-center flex py-16">
+    <Wrapper className=" h-auto justify-center flex py-8  ">
       <div className="w-[934px]  grid grid-cols-1 xsm:grid-cols-2 md:grid-cols-3 gap-8 justify-between">
-        <div className="flex flex-col gap-[24px] items-center">
-          <Image src={service1} alt="" className="h-[80px] w-[80px] " />
+        <div className="flex flex-col gap-[24px] items-center ">
+          <Image src={service1} alt="" className="h-[80px] w-[80px]  " />
           <div className="flex flex-col gap-[8px] items-center text-center">
             <h1 className={`${Inters.className} font-semibold text-[20px]`}>
               FREE AND FAST DELIVERY
@@ -22,7 +23,7 @@ const Services = () => {
             </p>
           </div>
         </div>
-        <div className="flex flex-col gap-[24px] items-center">
+        <div className="flex flex-col gap-[24px] items-center ">
           <Image src={service2} alt="" className="h-[80px] w-[80px] " />
           <div className="flex flex-col gap-[8px] items-center text-center">
             <h1 className={`${Inters.className} font-semibold text-[20px]`}>
@@ -33,7 +34,7 @@ const Services = () => {
             </p>
           </div>
         </div>
-        <div className="flex flex-col gap-[24px] items-center">
+        <div className="flex flex-col gap-[24px] items-center ">
           <Image src={service3} alt="" className="h-[80px] w-[80px] " />
           <div className="flex flex-col gap-[8px] items-center text-center">
             <h1 className={`${Inters.className} font-semibold text-[20px]`}>
@@ -45,7 +46,7 @@ const Services = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Wrapper>
   );
 };
 

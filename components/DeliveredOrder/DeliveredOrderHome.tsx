@@ -7,8 +7,8 @@ import Wrapper from "@/shared/Wrapper"
 import { Inter } from "next/font/google"
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
-import type { Order } from "@/components/Orders/types"
-import CancelOrderCard from "./CancelOrderCard"
+import type { Order } from "./types"
+import DeliveredOrderCard from "./DeliveredOrderCard"
 import LoadingSpinner from "@/shared/LoadingSpinner"
 
 const inter = Inter({ subsets: ["latin"], weight: ["400", "700"] })
@@ -22,11 +22,11 @@ const Home: React.FC = () => {
     async function getData() {
       try {
         const response = await client.fetch(
-          `*[_type == "cancelOrder" && userLoginEmail == $email] {
+          `*[_type == "delivered" && userLoginEmail == $email] {
             orderId,
             firstName,
             orderDate,
-            cancelledAt,
+            deliveryDate,
             products
           }`,
           {
@@ -34,11 +34,11 @@ const Home: React.FC = () => {
           }
         )
 
+
         const sortedData = response.sort(
-                  (a: Order, b: Order) =>
-                    new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime()
-                );
-        
+          (a: Order, b: Order) =>
+            new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime()
+        );
 
         setData(sortedData)
       } catch (error) {
@@ -57,7 +57,7 @@ const Home: React.FC = () => {
   if (data.length === 0) {
     return (
       <Wrapper className="py-10 px-4 flex items-center justify-center">
-        <p className={`${inter.className} text-[21px] text-black font-medium`}>No Cancelled Orders found.</p>
+        <p className={`${inter.className} text-[21px] text-black font-medium`}>No Delivered Orders found.</p>
       </Wrapper>
     )
   }
@@ -66,7 +66,7 @@ const Home: React.FC = () => {
     <Wrapper className="py-10 px-4 flex items-center justify-center">
       <div className="grid grid-cols-1 gap-14 md:grid-cols-2 lgll:grid-cols-3">
         {data.map((order, index) => (
-          <CancelOrderCard key={index} order={order} />
+          <DeliveredOrderCard key={index} order={order} />
         ))}
       </div>
     </Wrapper>

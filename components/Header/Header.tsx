@@ -172,10 +172,10 @@ const Header = () => {
               {userInfo && (
                 <div className="relative">
                   <span
-                    className="h-[32px] w-[32px] -mt-2 hover:bg-carminePink rounded-full flex items-center justify-center cursor-pointer"
+                    className="h-[32px] w-[32px] hover:text-white -mt-2 hover:bg-carminePink rounded-full flex items-center justify-center cursor-pointer"
                     onClick={toggleUserDropdown}
                   >
-                    <LuUser size={28} className="hover:text-white" />
+                    <LuUser size={28}  />
                   </span>
                   <AnimatePresence>
                     {isUserDropdownOpen && (
@@ -193,6 +193,13 @@ const Header = () => {
                             onClick={() => setIsUserDropdownOpen(false)}
                           >
                             Orders
+                          </Link>
+                          <Link
+                            href="/delivered"
+                            className={`${poppins.className} block px-4 py-2 text-gray-700 hover:bg-gray-100`}
+                            onClick={() => setIsUserDropdownOpen(false)}
+                          >
+                            Delivered Orders
                           </Link>
                           <Link
                             href="/cancellations"
