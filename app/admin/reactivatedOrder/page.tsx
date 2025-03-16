@@ -253,7 +253,8 @@ export default function CancelleedOrderPage() {
                     <span>
                       {product.productName} - Quantity:{" "}
                       <b>{product.quantity}</b> -{" "}
-                      <b>${product.price.toFixed(2)}</b>
+                      <b>{Number(product.price || 0).toFixed(2)}</b>
+
                     </span>
                   </li>
                 ))}
