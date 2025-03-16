@@ -212,6 +212,9 @@ const sendReactivateOrderToSanity = async () => {
     router.push("/orders"); 
 
     setTimeout(async () => {
+
+      console.log("🚀 Initiating order movement to 'delivered' schema...");
+
       try {
         const deliveredOrderData = {
           ...reactivationData,
@@ -219,7 +222,7 @@ const sendReactivateOrderToSanity = async () => {
           orderStatus: "delivered",
           paymentStatus: "paid",
         };
-
+        console.log("📦 Creating delivered order with data:", deliveredOrderData);
         const deliveredResult = await client.create(deliveredOrderData);
 
 
@@ -229,6 +232,7 @@ const sendReactivateOrderToSanity = async () => {
 
         if (deliveredResult) {
           await client.delete(orderData._id);
+          console.log(`✅ Successfully created delivered order for Order ID: ${orderDetails.orderId}`);
         } else {
           console.error("Failed to move order to delivered schema")
         }
