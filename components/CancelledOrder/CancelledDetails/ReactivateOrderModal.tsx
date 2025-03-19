@@ -10,7 +10,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
 
-
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 
 interface Product {
@@ -59,219 +58,220 @@ export function ReactivateOrderModal({
   const userInfo = useSelector((state: RootState) => state.products.userInfo);
   const [isReactivating, setIsReactivating] = useState(false);
   const router = useRouter();
-console.log(onConfirm)
+  console.log(onConfirm);
 
-const sendReactivateOrderToSanity = async () => {
-  setIsReactivating(true);
-
-  try {
-    const reactivatedOrderQuery = `*[_type == "reactivateOrder" && orderId == $orderId][0]`;
-    const reactivatedOrderParams = { orderId: orderDetails.orderId };
-    
-    let existingReactivatedOrder;
+  const sendReactivateOrderToSanity = async () => {
+    setIsReactivating(true);
 
     try {
-      existingReactivatedOrder = await client.fetch(
-        reactivatedOrderQuery,
-        reactivatedOrderParams
-      );
-    } catch (error) {
-      console.error(error);
-    }
+      const reactivatedOrderQuery = `*[_type == "reactivateOrder" && orderId == $orderId][0]`;
+      const reactivatedOrderParams = { orderId: orderDetails.orderId };
 
-    const cancelOrderQuery = `*[_type == "cancelOrder" && orderId == $orderId][0]`;
-    const cancelOrderParams = { orderId: orderDetails.orderId };
-    let cancelledOrder;
+      let existingReactivatedOrder;
 
-    try {
-      cancelledOrder = await client.fetch(
-        cancelOrderQuery,
-        cancelOrderParams
-      );
-    } catch (error) {
-      console.error(error);
-    }
-
-    if (!cancelledOrder) {
-      console.warn(
-        `Cancelled order with ID ${orderDetails.orderId} not found. Proceeding with reactivation.`
-      );
-    }
-
-    const orderQuery = `*[_type == "order" && orderId == $orderId][0]`;
-    const orderParams = { orderId: orderDetails.orderId };
-    let existingOrder;
-
-    try {
-      existingOrder = await client.fetch(orderQuery, orderParams);
-    } catch (error) {
-      console.error(error);
-    }
-
-    if (!existingOrder) {
       try {
-        await client.create({
-          _type: "order",
-          orderId: orderDetails.orderId,
-          userLoginName:
-            userInfo?.displayName || cancelledOrder?.userLoginName,
-          userLoginEmail: userInfo?.email || cancelledOrder?.userLoginEmail,
-          userLoginPassword:
-            userInfo?.password || cancelledOrder?.userLoginPassword,
-          firstName: orderDetails.firstName,
-          address: orderDetails.address,
-          city: orderDetails.city,
-          phone: orderDetails.phone,
-          email: orderDetails.email,
-          products: orderDetails.products,
-          totalAmount: orderDetails.totalAmount,
-          orderStatus: "pending",
-          paymentStatus: "pending",
-          orderDate: new Date().toISOString(),
-          reactivatedAt: new Date().toISOString(),
-        });
+        existingReactivatedOrder = await client.fetch(
+          reactivatedOrderQuery,
+          reactivatedOrderParams
+        );
       } catch (error) {
-        throw error;
+        console.error(error);
       }
-    } else {
+
+      const cancelOrderQuery = `*[_type == "cancelOrder" && orderId == $orderId][0]`;
+      const cancelOrderParams = { orderId: orderDetails.orderId };
+      let cancelledOrder;
+
       try {
-        await client
-          .patch(existingOrder._id)
-          .set({
+        cancelledOrder = await client.fetch(
+          cancelOrderQuery,
+          cancelOrderParams
+        );
+      } catch (error) {
+        console.error(error);
+      }
+
+      if (!cancelledOrder) {
+        console.warn(
+          `Cancelled order with ID ${orderDetails.orderId} not found. Proceeding with reactivation.`
+        );
+      }
+
+      const orderQuery = `*[_type == "order" && orderId == $orderId][0]`;
+      const orderParams = { orderId: orderDetails.orderId };
+      let existingOrder;
+
+      try {
+        existingOrder = await client.fetch(orderQuery, orderParams);
+      } catch (error) {
+        console.error(error);
+      }
+
+      if (!existingOrder) {
+        try {
+          await client.create({
+            _type: "order",
+            orderId: orderDetails.orderId,
+            userLoginName:
+              userInfo?.displayName || cancelledOrder?.userLoginName,
+            userLoginEmail: userInfo?.email || cancelledOrder?.userLoginEmail,
+            userLoginPassword:
+              userInfo?.password || cancelledOrder?.userLoginPassword,
+            firstName: orderDetails.firstName,
+            address: orderDetails.address,
+            city: orderDetails.city,
+            phone: orderDetails.phone,
+            email: orderDetails.email,
+            products: orderDetails.products,
+            totalAmount: orderDetails.totalAmount,
+            orderStatus: "pending",
+            paymentStatus: "pending",
+            orderDate: new Date().toISOString(),
+            reactivatedAt: new Date().toISOString(),
+          });
+        } catch (error) {
+          throw error;
+        }
+      } else {
+        try {
+          await client
+            .patch(existingOrder._id)
+            .set({
+              orderStatus: "pending",
+              paymentStatus: "pending",
+              reactivatedAt: new Date().toISOString(),
+            })
+            .commit();
+        } catch (error) {
+          console.error(error);
+          await client.create({
+            _type: "order",
+            ...existingOrder,
+            _id: undefined,
             orderStatus: "pending",
             paymentStatus: "pending",
             reactivatedAt: new Date().toISOString(),
-          })
-          .commit();
-      } catch (error) {
-        console.error(error);
-        await client.create({
-          _type: "order",
-          ...existingOrder,
-          _id: undefined,
-          orderStatus: "pending",
-          paymentStatus: "pending",
-          reactivatedAt: new Date().toISOString(),
-        });
+          });
+        }
       }
-    }
 
-    const reactivationData = {
-      orderId: orderDetails.orderId,
-      userLoginName: userInfo?.displayName,
-      userLoginEmail: userInfo?.email,
-      userLoginPassword: userInfo?.password,
-      firstName: orderDetails.firstName,
-      address: orderDetails.address,
-      city: orderDetails.city,
-      phone: orderDetails.phone,
-      email: orderDetails.email,
-      products: orderDetails.products,
-      totalAmount: orderDetails.totalAmount,
-      orderStatus: "pending",
-      paymentStatus: "pending",
-      orderDate: new Date().toISOString(),
-      reactivatedAt: new Date().toISOString(),
-      previousStatus: cancelledOrder?.orderStatus || "unknown",
-      previousPaymentStatus: cancelledOrder?.paymentStatus || "unknown",
-    };
+      const reactivationData = {
+        orderId: orderDetails.orderId,
+        userLoginName: userInfo?.displayName,
+        userLoginEmail: userInfo?.email,
+        userLoginPassword: userInfo?.password,
+        firstName: orderDetails.firstName,
+        address: orderDetails.address,
+        city: orderDetails.city,
+        phone: orderDetails.phone,
+        email: orderDetails.email,
+        products: orderDetails.products,
+        totalAmount: orderDetails.totalAmount,
+        orderStatus: "pending",
+        paymentStatus: "pending",
+        orderDate: new Date().toISOString(),
+        reactivatedAt: new Date().toISOString(),
+        previousStatus: cancelledOrder?.orderStatus || "unknown",
+        previousPaymentStatus: cancelledOrder?.paymentStatus || "unknown",
+      };
 
-    if (existingReactivatedOrder) {
-      try {
-        await client
-          .patch(existingReactivatedOrder._id)
-          .set(reactivationData)
-          .commit();
-      } catch (error) {
-        console.log(error);
-        await client.create({
-          _type: "reactivateOrder",
-          ...reactivationData,
-        });
+      if (existingReactivatedOrder) {
+        try {
+          await client
+            .patch(existingReactivatedOrder._id)
+            .set(reactivationData)
+            .commit();
+        } catch (error) {
+          console.log(error);
+          await client.create({
+            _type: "reactivateOrder",
+            ...reactivationData,
+          });
+        }
+      } else {
+        try {
+          await client.create({
+            _type: "reactivateOrder",
+            ...reactivationData,
+          });
+        } catch (error) {
+          throw error;
+        }
       }
-    } else {
-      try {
-        await client.create({
-          _type: "reactivateOrder",
-          ...reactivationData,
-        });
-      } catch (error) {
-        throw error;
+
+      if (cancelledOrder?._id) {
+        try {
+          await client.delete(cancelledOrder._id);
+        } catch (error) {
+          console.error(error);
+        }
       }
-    }
 
-    if (cancelledOrder?._id) {
-      try {
-        await client.delete(cancelledOrder._id);
-      } catch (error) {
-        console.error(error);
-      }
-    }
+      toast.success("Order reactivated successfully.");
+      let countdown = 8;
+      const toastId = toast.loading(
+        `You will be redirected to the orders page in ${countdown} seconds`
+      );
 
-    toast.success("Order reactivated successfully.");
-    let countdown = 5;
-    const countdownInterval = setInterval(() => {
-      toast.success(`Redirecting to Orders page in ${countdown} seconds...`);
-      countdown--;
+      const countdownInterval = setInterval(() => {
+        countdown--;
 
-      if (countdown === 0) {
-        clearInterval(countdownInterval);
-        router.push("/orders");
-      }
-    }, 1000);
-
-
-    setTimeout(async () => {
-
-      try {
-        const deliveredOrderData = {
-          ...reactivationData,
-          _type: "delivered",
-          orderStatus: "delivered",
-          paymentStatus: "paid",
-        };
-       
-        const deliveredResult = await client.create(deliveredOrderData);
-
-
-        const orderData = await client.fetch(
-          `*[_type == "order" && orderId == "${orderDetails.orderId}"][0]`
-        );
-
-        if (deliveredResult) {
-          await client.delete(orderData._id);
-       
+        if (countdown === 0) {
+          clearInterval(countdownInterval);
+          toast.dismiss(toastId);
+          router.push("/orders");
         } else {
-          console.error("Failed to move order to delivered schema")
+          toast.dismiss(toastId);
+          toast.loading(
+            `You will be redirected to the orders page in ${countdown} seconds`,
+            { id: toastId }
+          );
         }
+      }, 1000);
 
-        const reactivateOrder = await client.fetch(
-          `*[_type == "reactivateOrder" && orderId == "${orderDetails.orderId}"][0]`
-        );
-        if (reactivateOrder) {
-          await client.delete(reactivateOrder._id);
+      setTimeout(async () => {
+        try {
+          const deliveredOrderData = {
+            ...reactivationData,
+            _type: "delivered",
+            orderStatus: "delivered",
+            paymentStatus: "paid",
+          };
+
+          const deliveredResult = await client.create(deliveredOrderData);
+
+          const orderData = await client.fetch(
+            `*[_type == "order" && orderId == "${orderDetails.orderId}"][0]`
+          );
+
+          if (deliveredResult) {
+            await client.delete(orderData._id);
+          } else {
+            console.error("Failed to move order to delivered schema");
+          }
+
+          const reactivateOrder = await client.fetch(
+            `*[_type == "reactivateOrder" && orderId == "${orderDetails.orderId}"][0]`
+          );
+          if (reactivateOrder) {
+            await client.delete(reactivateOrder._id);
+          } else {
+            console.error("Failed to delete reactivate order");
+          }
+        } catch (error) {
+          console.error(
+            "Error moving order to delivered schema or deleting:",
+            error
+          );
         }
-        else {
-          console.error("Failed to delete reactivate order")
-        }
-      } catch (error) {
-        console.error(
-          "Error moving order to delivered schema or deleting:",
-          error
-        );
-      }
-    },300 * 1000);
-
-
-
-  } catch (error) {
-    console.error("Error reactivating order:", error);
-    toast.error("Failed to reactivate order. Please try again.");
-  } finally {
-    setIsReactivating(false);
-  }
-};
-
+      }, 300 * 1000);
+    } catch (error) {
+      console.error("Error reactivating order:", error);
+      toast.error("Failed to reactivate order. Please try again.");
+    } finally {
+      setIsReactivating(false);
+    }
+  };
 
   return (
     <Dialog open={isOpen} onClose={onClose} className="relative z-50">

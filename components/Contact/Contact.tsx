@@ -30,7 +30,7 @@ const Contact = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Only proceed if userInfo exists
+  
     if (!userInfo) {
       toast.error("You must be logged in to send a message.");
       setIsLoading(false);
