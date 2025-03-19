@@ -208,7 +208,7 @@ export function ReactivateOrderModal({
       }
 
       toast.success("Order reactivated successfully.");
-      onClose()
+      onClose();
       let countdown = 8;
       const toastId = toast.loading(
         `You will be redirected to the orders page in ${countdown} seconds`
