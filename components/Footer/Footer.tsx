@@ -123,7 +123,8 @@ const Footer = () => {
           <div className="flex flex-col gap-4  h-[144px]  justify-end ">
             
             {quickLinks.map((item, index) => (
-             <p
+              <p
+                key={index}
              className={`${poppins.className} hover:underline cursor-pointer  font-normal text-[16px] leading-[24px] text-primary`}
            >
              {item}
