@@ -209,11 +209,19 @@ const sendReactivateOrderToSanity = async () => {
     }
 
     toast.success("Order reactivated successfully.");
-    router.push("/orders"); 
+    let countdown = 5;
+    const countdownInterval = setInterval(() => {
+      toast.success(`Redirecting to Orders page in ${countdown} seconds...`);
+      countdown--;
+
+      if (countdown === 0) {
+        clearInterval(countdownInterval);
+        router.push("/orders");
+      }
+    }, 1000);
+
 
     setTimeout(async () => {
-
-      console.log("🚀 Initiating order movement to 'delivered' schema...");
 
       try {
         const deliveredOrderData = {
@@ -222,7 +230,7 @@ const sendReactivateOrderToSanity = async () => {
           orderStatus: "delivered",
           paymentStatus: "paid",
         };
-        console.log("📦 Creating delivered order with data:", deliveredOrderData);
+       
         const deliveredResult = await client.create(deliveredOrderData);
 
 
@@ -232,7 +240,7 @@ const sendReactivateOrderToSanity = async () => {
 
         if (deliveredResult) {
           await client.delete(orderData._id);
-          console.log(`✅ Successfully created delivered order for Order ID: ${orderDetails.orderId}`);
+       
         } else {
           console.error("Failed to move order to delivered schema")
         }
@@ -252,7 +260,7 @@ const sendReactivateOrderToSanity = async () => {
           error
         );
       }
-    },60 * 1000);
+    },300 * 1000);
 
 
 

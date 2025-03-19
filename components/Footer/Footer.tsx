@@ -5,11 +5,28 @@ import Image from "next/image";
 import QrCodeImg from "@/images/FooterImg1.png";
 import GoogleDownload from "@/images/FooterImg2.png";
 import IosDownload from "@/images/FooterImg3.png";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"], weight: ["400", "700"] });
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 
 const Footer = () => {
+
+  const menuItems = [
+    { name: "My Orders", href: "/orders" },
+    { name: "Login / Register", href: "/signup" },
+    { name: "Cart", href: "/cart" },
+    { name: "Wishlist", href: "/wishlist" },
+    { name: "Shop", href: "/" },
+  ];
+
+  const quickLinks = [
+    'Privacy Policy',
+    'Terms Of Use',
+    'FAQ',
+    'Contact'
+  ]
+
   return (
     <div className="bg-black h-auto xl:h-[460px] relative ">
       <Wrapper className="grid grid-cols-1 sm:grid-cols-2 mdl:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-14 lg:gap-[87px] py-8 h-auto xl:h-[236px] px-3 xl:px-0">
@@ -87,31 +104,14 @@ const Footer = () => {
             Account
           </h2>
           <div className="flex flex-col gap-4  h-[184px]  justify-end ">
-            <p
+            {menuItems.map((item , index) => (
+            <Link href={item.href} key={index}
               className={`${poppins.className} hover:underline cursor-pointer  font-normal text-[16px] leading-[24px] text-primary`}
             >
-              My Orders
-            </p>
-            <p
-              className={`${poppins.className} hover:underline cursor-pointer  font-normal text-[15px] leading-[24px] text-primary`}
-            >
-              Login / Register
-            </p>
-            <p
-              className={`${poppins.className} hover:underline cursor-pointer  font-normal text-[16px] leading-[24px] text-primary`}
-            >
-              Cart
-            </p>
-            <p
-              className={`${poppins.className} hover:underline cursor-pointer  font-normal text-[16px] leading-[24px] text-primary`}
-            >
-              Wishlist
-            </p>
-            <p
-              className={`${poppins.className} hover:underline cursor-pointer  font-normal text-[16px] leading-[24px] text-primary`}
-            >
-              Shop
-            </p>
+             {item.name}
+            </Link>
+            ))}
+            
           </div>
         </div>
         <div className="w-[120px] h-[196px]  gap-6 flex flex-col">
@@ -121,26 +121,14 @@ const Footer = () => {
             Quick Links
           </h2>
           <div className="flex flex-col gap-4  h-[144px]  justify-end ">
-            <p
-              className={`${poppins.className} hover:underline cursor-pointer  font-normal text-[16px] leading-[24px] text-primary`}
-            >
-              Privacy Policy
-            </p>
-            <p
-              className={`${poppins.className} hover:underline cursor-pointer  font-normal text-[15px] leading-[24px] text-primary`}
-            >
-              Terms Of Use
-            </p>
-            <p
-              className={`${poppins.className} hover:underline cursor-pointer  font-normal text-[16px] leading-[24px] text-primary`}
-            >
-              FAQ
-            </p>
-            <p
-              className={`${poppins.className} hover:underline cursor-pointer  font-normal text-[16px] leading-[24px] text-primary`}
-            >
-              Contact
-            </p>
+            
+            {quickLinks.map((item, index) => (
+             <p
+             className={`${poppins.className} hover:underline cursor-pointer  font-normal text-[16px] leading-[24px] text-primary`}
+           >
+             {item}
+           </p>
+           ))}
           </div>
         </div>
         <div className="w-[200px] h-[210px]  gap-6  flex flex-col">

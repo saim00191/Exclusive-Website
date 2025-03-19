@@ -34,6 +34,15 @@ export default function EditDetailsModal({ isOpen, onClose, field, value, onUpda
       return
     }
 
+    if (field === "address" && inputValue.trim().length < 10) {
+      return setError("Address must be at least 10 characters long");
+    }
+
+
+    if (field === "city" && inputValue.trim().length < 5) {
+      return setError("City must be at least 5 characters long");
+    }
+
     onUpdate(field, inputValue)
     onClose()
     setInputValue("")

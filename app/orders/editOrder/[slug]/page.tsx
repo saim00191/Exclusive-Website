@@ -31,7 +31,7 @@ export default async function EditOrder({ params }: EditOrderProps) {
   const orderDate = new Date(order.orderDate);
   const currentDate = new Date();
   const timeDifference = currentDate.getTime() - orderDate.getTime();
-  const daysDifference = timeDifference / (1000 * 3600 * 24);
+  const daysDifference = timeDifference / (180 * 1000);
 
   if (daysDifference > 3) {
     return (

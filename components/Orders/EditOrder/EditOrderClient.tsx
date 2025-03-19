@@ -84,13 +84,26 @@ export default function EditOrderClient({ slug }: { slug: string }) {
   const confirmCancelOrder = async () => {
     if (data && data._id) {
       try {
-        await client.delete(data._id)
-        router.push("/cancellations")
+        await client.delete(data._id);
+        let countdown = 8;
+  
+        const countdownInterval = setInterval(() => {
+          toast.success(`You will be redirected to the cancellation page in ${countdown} seconds`);
+          countdown--;
+  
+          if (countdown === 0) {
+            clearInterval(countdownInterval);
+            router.push("/cancellations");
+          }
+        }, 1000);
+        
       } catch (error) {
-        console.log(error)
+        console.log(error);
+        toast.error("Failed to cancel the order. Please try again.");
       }
     }
-  }
+  };
+  
 
   if (!data) {
     return <LoadingSpinner />
