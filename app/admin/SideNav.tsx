@@ -15,7 +15,7 @@ import { clearAdminInfo } from "@/redux/adminSlice";
 import { useRouter } from "next/navigation";
 import { RootState } from "@/redux/store";
 import { IoMdLogIn } from "react-icons/io";
-
+import { FaDoorOpen } from "react-icons/fa6";
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 
 const SideNav = () => {
@@ -37,6 +37,7 @@ const SideNav = () => {
     { icon: TbCancel, title: "Cancelled Orders", href: "/admin/cancelledOrders" },
     { icon: FaArrowsRotate, title: "Reactivated Orders", href: "/admin/reactivatedOrder" },
     { icon: TiMessages, title: "Inbox", href: "/admin/inbox" },
+    { icon: FaDoorOpen, title: "Delivered", href: "/admin/delivered" },
   ];
 
   return (

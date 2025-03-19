@@ -49,7 +49,7 @@ export default function CancelleedOrderPage() {
     const fetchOrders = async () => {
       try {
         const Orders: Order[] = await client.fetch(
-          `*[_type == "reactivateOrder"]{
+          `*[_type == "delivered"]{
             orderId,
             firstName,
             email,
@@ -118,7 +118,7 @@ export default function CancelleedOrderPage() {
       className={`${poppins.className} py-10 px-4 sm:px-6 lg:px-8 ${selectedOrder ? "pointer-events-none" : ""}`}
     >
       <h1 className="font-bold mb-6 text-[28px] sm:text-[36px] tracking-[4px] text-black ">
-      Reactivated Orders
+      Delivered Orders
       </h1>
       <div className="overflow-x-auto rounded-md border">
         <table className="min-w-full bg-white border-collapse">
@@ -200,8 +200,8 @@ export default function CancelleedOrderPage() {
               <p>City: {selectedOrder.city}</p>
               {selectedOrder.company && <p>City: {selectedOrder.city}</p>}
               <p>Address: {selectedOrder.address}</p>
-              <p>Status: {selectedOrder.orderStatus}</p>
-              <p>Payment Status: {selectedOrder.paymentStatus}</p>
+              <p>Status: Delivered</p>
+              <p>Payment Status: Paid</p>
               <p>Payment Method: Cash on Delivery</p>
               <p>
                 Order Date:{" "}
@@ -212,7 +212,7 @@ export default function CancelleedOrderPage() {
                 })}
               </p>
               <p>
-                Reactivated Date :
+              Delivered Date :
                 {selectedOrder.reactivatedAt
                   ? new Date(selectedOrder.reactivatedAt).toLocaleString(
                       "en-GB",

@@ -177,7 +177,7 @@ export default function OrdersPage() {
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md sm:max-w-lg pointer-events-auto"
+              className="bg-white  p-6 rounded-lg shadow-lg w-full max-w-md sm:max-w-lg pointer-events-auto"
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.9 }}
@@ -185,7 +185,8 @@ export default function OrdersPage() {
               <h2 className="text-lg sm:text-xl font-bold mb-3">
                 Order Details: {selectedOrder.orderId}
               </h2>
-              <p>Customer: {selectedOrder.firstName}</p>
+              <div className="flex flex-col gap-1 h-[200px] overflow-y-scroll">
+              <p>Customer Login Name: {selectedOrder.firstName}</p>
               <p>LoggedIn Email: {selectedOrder.userLoginEmail}</p>
               {selectedOrder.userLoginPassword && (
                 <p>LoggedIn Password: {selectedOrder.userLoginPassword}</p>
@@ -220,8 +221,9 @@ export default function OrdersPage() {
                 })}
               </p>
               <p>Total: ${selectedOrder.totalAmount}</p>
+              </div>
               <h3 className="font-semibold mt-4">Products:</h3>
-              <ul className="h-[250px] overflow-y-scroll">
+              <ul className="h-[200px] overflow-y-scroll">
                 {selectedOrder.products.map((product) => (
                   <li
                     key={product.productId}
