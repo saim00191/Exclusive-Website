@@ -9,8 +9,11 @@ const About = () => {
     <div className='flex flex-col gap-[50px] md:gap-[130px]'>
         <Hero/>
         <Rating/>
-        <Mamber/>
+      <Mamber />
+
+
         <Services/>
+
     </div>
   )
 }

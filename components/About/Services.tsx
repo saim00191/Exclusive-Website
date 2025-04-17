@@ -10,8 +10,8 @@ const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 const Inters = Inter({ subsets: ["latin"], weight: ["400", "700"] });
 const Services = () => {
   return (
-    <Wrapper className=" h-auto justify-center flex py-8  ">
-      <div className="w-[934px]  grid grid-cols-1 xsm:grid-cols-2 md:grid-cols-3 gap-8 justify-between">
+    <Wrapper className=" h-auto justify-center flex py-8">
+      <div className="w-full grid grid-cols-1 xsm:grid-cols-2 md:grid-cols-3 gap-8 justify-between">
         <div className="flex flex-col gap-[24px] items-center ">
           <Image src={service1} alt="" className="h-[80px] w-[80px]  " />
           <div className="flex flex-col gap-[8px] items-center text-center">

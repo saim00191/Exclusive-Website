@@ -11,7 +11,7 @@ const Inters = Inter({ subsets: ["latin"], weight: ["400", "700"] });
 const Rating = () => {
   return (
     <div className="flex items-center justify-center">
-      <div className="  grid lg:grid-cols-4 md:grid-cols-2 gap-4    justify-between ">
+      <div className="  grid lg:grid-cols-3 lgl:grid-cols-4 justify-items-center md:grid-cols-2 gap-4    justify-between ">
         <div className="flex justify-center items-center hover:bg-[#DB4444] hover:text-white rounded-[4px] w-[270px] border">
           <div className="flex justify-center items-center py-[50px]  flex-col  gap-[24px]">
             <Image src={ratingImage1} alt="" className="h-[80px] w-[80px]" />
