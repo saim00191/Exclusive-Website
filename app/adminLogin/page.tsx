@@ -22,7 +22,7 @@ export default function LoginForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (name === process.env.NEXT_PUBLIC_ADMIN_NAME && password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD) {
+    if (name === process.env.NEXT_PUBLIC_ADMIN_NAME && password === "talha2468##") {
       const adminData = { name: name , password: password };
 
       dispatch(setAdminInfo(adminData));
